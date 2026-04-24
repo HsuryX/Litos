@@ -3,6 +3,9 @@
   "type": "module",
   "version": "1.0.3",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
@@ -69,5 +72,10 @@
     "tailwindcss": "^4.2.4",
     "tsx": "^4.21.0",
     "unist-util-visit": "^5.1.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "yaml": "^2.8.3"
+    }
   }
 }

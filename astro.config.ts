@@ -28,5 +28,7 @@ export default defineConfig({
     remarkPlugins,
     rehypePlugins,
   },
-  integrations: [expressiveCode(), mdx(), react(), sitemap(), robotsTxt()],
+  // extendMarkdownConfig: true is the default; setting it explicitly documents that .mdx
+  // files share the remark/rehype plugin list declared above.
+  integrations: [expressiveCode(), mdx({ extendMarkdownConfig: true }), react(), sitemap(), robotsTxt()],
 })

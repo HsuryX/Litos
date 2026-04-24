@@ -1,4 +1,5 @@
 ---
+import type { CollectionEntry } from 'astro:content'
 import { formatDate } from '~/lib/utils'
 import { ANALYTICS_CONFIG, POSTS_CONFIG } from '~/config'
 import Prose from '~/components/posts/base/Prose.astro'
@@ -6,7 +7,7 @@ import Badge from '~/components/posts/base/Badge.astro'
 import LqipImage from '~/components/base/LqipImage.astro'
 
 interface Props {
-  frontmatter: any
+  frontmatter: CollectionEntry<'posts'>['data']
   minutesRead?: string
   wordCount?: number
 }

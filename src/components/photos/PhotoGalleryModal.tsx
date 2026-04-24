@@ -77,8 +77,9 @@ export default function PhotoGalleryModal({ photos, title, description, isOpen, 
   }, [isOpen])
 
   // 拖拽结束时吸附到最近图片，判定边界放宽到 7%
+  // motion 不导出 PanInfo 类型；我们只用 offset.x，其余字段不关心。
   const handleDragEnd = useCallback(
-    (_: any, info: { offset: { x: number } }) => {
+    (_: unknown, info: { offset: { x: number } }) => {
       const offset = info.offset.x
       const threshold = (containerWidth + gap) * 0.07
       let newIdx = currentIndex

@@ -1,4 +1,5 @@
 ---
+import type { MarkdownHeading } from 'astro'
 import Layout from '~/layouts/Layout.astro'
 import MetaOnly from '~/components/posts/layouts/MetaOnly.astro'
 import CoverSplit from '~/components/posts/layouts/CoverSplit.astro'
@@ -30,12 +31,13 @@ const { post, posts, prev, next } = Astro.props
 const { data: frontmatter } = post
 const { Content, headings, remarkPluginFrontmatter } = await render(post)
 
-const filterHeadings = headings.filter((heading: any) => heading.slug !== 'footnote-label')
+const filterHeadings = headings.filter((heading: MarkdownHeading) => heading.slug !== 'footnote-label')
 
 const hasValidHeadings = filterHeadings.length > 1
 type LayoutKey = 'metaOnly' | 'coverSplit' | 'coverTop'
 
-const layoutMap: Record<LayoutKey, any> = {
+// 三个 layout 组件共享相同 Props 形状，用其中一个当联合类型足以让 spread 编译通过。
+const layoutMap: Record<LayoutKey, typeof MetaOnly> = {
   metaOnly: MetaOnly,
   coverSplit: CoverSplit,
   coverTop: CoverTop,

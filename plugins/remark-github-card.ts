@@ -21,6 +21,15 @@ const LICENSE_ICON_SVG = `
           <path d="M8.75.75V2h.985c.304 0 .603.08.867.231l1.29.736c.038.022.08.033.124.033h2.234a.75.75 0 0 1 0 1.5h-.427l2.111 4.692a.75.75 0 0 1-.154.838l-.53-.53.529.531-.001.002-.002.002-.006.006-.006.005-.01.01-.045.04c-.21.176-.441.327-.686.45C14.556 10.78 13.88 11 13 11a4.498 4.498 0 0 1-2.023-.454 3.544 3.544 0 0 1-.686-.45l-.045-.04-.016-.015-.006-.006-.004-.004v-.001a.75.75 0 0 1-.154-.838L12.178 4.5h-.162c-.305 0-.604-.079-.868-.231l-1.29-.736a.245.245 0 0 0-.124-.033H8.75V13h2.5a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1 0-1.5h2.5V3.5h-.984a.245.245 0 0 0-.124.033l-1.289.737c-.265.15-.564.23-.869.23h-.162l2.112 4.692a.75.75 0 0 1-.154.838l-.53-.53.529.531-.001.002-.002.002-.006.006-.016.015-.045.04c-.21.176-.441.327-.686.45C4.556 10.78 3.88 11 3 11a4.498 4.498 0 0 1-2.023-.454 3.544 3.544 0 0 1-.686-.45l-.045-.04-.016-.015-.006-.006-.004-.004v-.001a.75.75 0 0 1-.154-.838L2.178 4.5H1.75a.75.75 0 0 1 0-1.5h2.234a.249.249 0 0 0 .125-.033l1.288-.737c.265-.15.564-.23.869-.23h.984V.75a.75.75 0 0 1 1.5 0Zm2.945 8.477c.285.135.718.273 1.305.273s1.02-.138 1.305-.273L13 6.327Zm-10 0c.285.135.718.273 1.305.273s1.02-.138 1.305-.273L3 6.327Z"></path>
         </svg>`
 
+// HTML 实体转义：repo/owner 来自作者 MDX，但我们不希望 `"` `<` `>` 破坏属性或节点边界。
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
+
+// GitHub owner/repo 的合法字符集：字母数字、`-`、`_`、`.`、最多一个 `/` 分隔。
+// 拒绝任何不符合的输入，避免模板字符串里的属性注入。
+const GITHUB_SLUG = /^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?$/
+
 /**
  * Remark plugin: transforms the `::github{repo="owner/repo"}` directive into a GitHub card.
  * Emits static HTML only — /js/github-card.js hydrates the cards at runtime by querying
@@ -48,7 +57,9 @@ export const remarkGithubCard: RemarkPlugin = () => {
         return
       }
 
-      if (!repo || !repo.includes('/')) {
+      const [owner, repoName] = typeof repo === 'string' ? repo.split('/') : []
+
+      if (!owner || !repoName || !GITHUB_SLUG.test(owner) || !GITHUB_SLUG.test(repoName)) {
         data.hName = 'div'
         data.hProperties = { class: 'github-card-error' }
         node.children = [
@@ -60,7 +71,9 @@ export const remarkGithubCard: RemarkPlugin = () => {
         return
       }
 
-      const [owner, repoName] = repo.split('/')
+      const safeRepo = escapeHtml(`${owner}/${repoName}`)
+      const safeOwner = escapeHtml(owner)
+      const safeRepoName = escapeHtml(repoName)
 
       data.hName = 'div'
       data.hProperties = { class: 'github-card-wrapper' }
@@ -69,15 +82,15 @@ export const remarkGithubCard: RemarkPlugin = () => {
         {
           type: 'html',
           value: `
-<a class="card-github fetch-waiting" href="https://github.com/${repo}" target="_blank" rel="noopener noreferrer" data-repo="${repo}">
+<a class="card-github fetch-waiting" href="https://github.com/${safeRepo}" target="_blank" rel="noopener noreferrer" data-repo="${safeRepo}">
   <div class="gc-titlebar">
     <div class="gc-titlebar-left">
       <div class="gc-owner">
         <div class="gc-avatar"></div>
-        <div class="gc-user">${owner}</div>
+        <div class="gc-user">${safeOwner}</div>
       </div>
       <div class="gc-divider">/</div>
-      <div class="gc-repo">${repoName}</div>
+      <div class="gc-repo">${safeRepoName}</div>
     </div>
     <div class="github-logo">${GITHUB_LOGO_SVG}</div>
   </div>

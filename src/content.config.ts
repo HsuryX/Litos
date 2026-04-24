@@ -2,7 +2,11 @@ import { glob } from 'astro/loaders'
 import { defineCollection } from 'astro:content'
 import { z } from 'astro/zod'
 import { POSTS_CONFIG } from '~/config'
-import type { CoverLayout, PostType } from '~/types'
+
+// 与 src/types.ts 中的 PostType / CoverLayout 保持对齐；z.custom 不带 refine 是 no-op，
+// 换成 z.enum 真正在构建期拒绝非法值（如拼错的布局 key）。
+const POST_TYPES = ['metaOnly', 'coverSplit', 'coverTop'] as const
+const COVER_LAYOUTS = ['left', 'right'] as const
 
 const posts = defineCollection({
   loader: glob({
@@ -17,12 +21,12 @@ const posts = defineCollection({
         pubDate: z.date(),
         tags: z.array(z.string()).optional(),
         updatedDate: z.date().optional(),
-        author: z.string().default(POSTS_CONFIG.author),
+        author: z.string().min(1).default(POSTS_CONFIG.author),
         cover: image().optional(),
         ogImage: image().optional(),
         recommend: z.boolean().default(false),
-        postType: z.custom<PostType>().optional(),
-        coverLayout: z.custom<CoverLayout>().optional(),
+        postType: z.enum(POST_TYPES).optional(),
+        coverLayout: z.enum(COVER_LAYOUTS).optional(),
         pinned: z.boolean().default(false),
         draft: z.boolean().default(false),
         license: z.string().optional(),

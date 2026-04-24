@@ -48,7 +48,7 @@ const PostLayout = layoutMap[layoutKey]
 <Layout
   title={frontmatter.title}
   description={frontmatter.description || frontmatter.title}
-  image={frontmatter.ogImage?.src ? `${SITE.website}${frontmatter.ogImage.src}` : SITE.ogImage}
+  image={frontmatter.ogImage?.src ? new URL(frontmatter.ogImage.src, SITE.website).href : SITE.ogImage}
 >
   <div class="relative flex flex-col justify-between h-fit z-[1]">
     <TocMobile {post} {posts} headings={filterHeadings} />

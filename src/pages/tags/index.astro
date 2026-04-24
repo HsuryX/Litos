@@ -16,7 +16,9 @@ const sortedTags = Object.entries(tagsMap)
   }))
   .sort((a, b) => b.count - a.count)
 
-const maxCount = Math.max(...sortedTags.map((t) => t.count))
+// Math.max on an empty spread returns -Infinity; fall back to 1 when there are no tags
+// so the unused-but-evaluated width calculation below stays a finite number.
+const maxCount = sortedTags.length > 0 ? Math.max(...sortedTags.map((t) => t.count)) : 1
 ---
 
 <Layout {title} {description}>

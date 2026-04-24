@@ -244,7 +244,6 @@ export interface PhotoData {
   description?: string
   date: string
   photos: Photo[]
-  travel?: string
 }
 
 /**

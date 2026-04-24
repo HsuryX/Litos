@@ -18,6 +18,11 @@ import rehypeKatex from 'rehype-katex'
 import type { RemarkPlugin, RehypePlugin } from '@astrojs/markdown-remark'
 import { type PropertiesFromTextDirective } from 'remark-directive-sugar'
 import { type CreateProperties } from 'rehype-external-links'
+import type { Build } from 'rehype-autolink-headings'
+
+// rehype-autolink-headings 的 content builder 接收一个 hast Element。它把 Element 导出成
+// Build 的参数类型，无需单独把 hast 加进 devDependencies。
+type AutolinkHeading = Parameters<Build>[0]
 
 export const remarkPlugins = [
   remarkSmartypants,
@@ -76,7 +81,7 @@ export const rehypePlugins = [
           'aria-label': text ? `Link to ${text}` : undefined,
         }
       },
-      content: (heading: any) => {
+      content: (heading: AutolinkHeading) => {
         const level = heading.tagName[1]
         return {
           type: 'text',

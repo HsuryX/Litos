@@ -6,8 +6,25 @@
   const isMobileViewport = window.matchMedia('(max-width: 767px)')
   const root = document.documentElement
 
+  // localStorage 在 Safari 私密模式、第三方 Cookie 被禁用等场景下访问会抛；所有读写都要兜底。
+  function safeGetItem(key) {
+    try {
+      return localStorage.getItem(key)
+    } catch {
+      return null
+    }
+  }
+
+  function safeSetItem(key, value) {
+    try {
+      localStorage.setItem(key, value)
+    } catch {
+      /* 忽略：下次 session 会回到默认值 */
+    }
+  }
+
   function getStoredTheme() {
-    const theme = localStorage.getItem(STORAGE_KEY)
+    const theme = safeGetItem(STORAGE_KEY)
     return theme === 'light' || theme === 'dark' || theme === 'system' ? theme : 'system'
   }
 
@@ -31,7 +48,7 @@
 
   function applyThemeWithoutTransition(theme, options) {
     root.classList.add('disable-transition')
-    localStorage.setItem(STORAGE_KEY, theme)
+    safeSetItem(STORAGE_KEY, theme)
     applyTheme(theme, options)
 
     requestAnimationFrame(() => {
@@ -52,7 +69,7 @@
     }
 
     if (isDark === currentIsDark) {
-      localStorage.setItem(STORAGE_KEY, theme)
+      safeSetItem(STORAGE_KEY, theme)
       applyTheme(theme, options)
       return
     }
@@ -67,7 +84,7 @@
     root.classList.add('disable-transition')
 
     const transition = document.startViewTransition(() => {
-      localStorage.setItem(STORAGE_KEY, theme)
+      safeSetItem(STORAGE_KEY, theme)
       applyTheme(theme, options)
     })
 

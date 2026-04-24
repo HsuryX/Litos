@@ -1,5 +1,6 @@
 ;(function () {
   var formatter = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 })
+  var FETCH_TIMEOUT_MS = 6000
 
   function hydrateCards() {
     var cards = document.querySelectorAll('.card-github.fetch-waiting')
@@ -9,8 +10,15 @@
       card.classList.remove('fetch-waiting')
       card.classList.add('fetch-in-flight')
 
-      fetch('https://api.github.com/repos/' + repo, { referrerPolicy: 'no-referrer' })
+      // 用 AbortController 兜住慢速/挂死的 GitHub API：6 秒没回就当失败，避免卡片永远停在 in-flight。
+      var controller = new AbortController()
+      var timer = setTimeout(function () {
+        controller.abort()
+      }, FETCH_TIMEOUT_MS)
+
+      fetch('https://api.github.com/repos/' + repo, { referrerPolicy: 'no-referrer', signal: controller.signal })
         .then(function (res) {
+          clearTimeout(timer)
           if (!res.ok) throw new Error('GitHub API request failed')
           return res.json()
         })
@@ -39,6 +47,7 @@
           card.classList.remove('fetch-in-flight')
         })
         .catch(function () {
+          clearTimeout(timer)
           card.classList.remove('fetch-in-flight')
           card.classList.add('fetch-error')
           var desc = card.querySelector('.gc-description')

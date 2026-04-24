@@ -1,10 +1,10 @@
 ---
+import type { HTMLAttributes } from 'astro/types'
 import { cn } from '~/lib/utils'
 
-type Props = {
+type Props = Omit<HTMLAttributes<'a'>, 'href' | 'class'> & {
   href: string
   class?: string
-  [key: string]: any
 }
 
 const { href, class: className, ...props }: Props = Astro.props

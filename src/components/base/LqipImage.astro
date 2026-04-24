@@ -1,11 +1,15 @@
 ---
 import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 import { generateLQIPFromPath } from 'plugins/remark-lqip'
 
+// 封装组件对内只接受 Astro 内容集合解析出的 ImageMetadata（frontmatter.cover 等），
+// 不覆盖 Image 的远程 URL + width/height 分支。Image 其余可选属性通过 rest 透传。
 interface Props {
-  src: any
+  src: ImageMetadata
   alt: string
-  [key: string]: any
+  style?: string
+  [key: string]: unknown
 }
 
 const { src, alt, style, ...rest } = Astro.props

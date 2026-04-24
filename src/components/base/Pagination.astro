@@ -1,10 +1,13 @@
 ---
 import type { Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
 import { POSTS_CONFIG } from '~/config'
 import { cn } from '~/lib/utils'
 
+// 两个调用点都传 CollectionEntry<'posts'>；Pagination 只消费 page.url/page.currentPage/page.lastPage，
+// 不会解引用 data[n]，所以这里把 data 类型绑到已知的 posts collection。
 interface Props {
-  page: Page<any>
+  page: Page<CollectionEntry<'posts'>>
   baseUrl: string
   class?: string
 }

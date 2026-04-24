@@ -284,9 +284,10 @@ html.theme-to-light::view-transition-new(theme-transition) {
 }
 
 /* ===== 滚动条样式 ===== */
-/* 1. Firefox (标准属性) */
+/* 1. Firefox (标准属性) —— 只作用在 html 上，Firefox 会向下层滚动容器继承，
+   避免覆盖 iframe（如 Giscus）和第三方组件的默认滚动条样式。 */
 @supports (scrollbar-width: thin) {
-  * {
+  html {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--scrollbar) / 0.4) transparent;
   }

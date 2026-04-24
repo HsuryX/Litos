@@ -3,6 +3,9 @@ dist/
 .astro/
 public/pagefind/
 
+# 手写的 IIFE 脚本——prettier 会把起始分号重排，破坏 `;(function () {})()` 写法
+public/js/
+
 # Lockfile
 pnpm-lock.yaml
 

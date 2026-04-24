@@ -72,6 +72,7 @@ export type PostType = 'metaOnly' | 'coverSplit' | 'coverTop'
  * @property {string} nextPostText - 下一篇文章按钮文本 / Next post button text
  * @property {string} prevPostText - 上一篇文章按钮文本 / Previous post button text
  * @property {string} recommendText - 推荐标签文本 / Recommend tag text
+ * @property {string} commentsText - 评论区标题文本 / Comments section heading text
  * @property {boolean} wordCountView - 是否在文章详情页显示字数 / Show word count on post detail pages
  */
 export interface PostConfig {
@@ -92,6 +93,7 @@ export interface PostConfig {
   nextPostText: string
   prevPostText: string
   recommendText: string
+  commentsText: string
   wordCountView: boolean
 }
 
@@ -100,11 +102,17 @@ export interface PostConfig {
  * @property {string} title - 标签页标题 / Tags page title
  * @property {string} description - 标签页描述 / Tags page description
  * @property {string} introduce - 标签页介绍 / Tags page introduce
+ * @property {string} tagsCountText - "N tags total" 计数后缀 / Suffix for tag count
+ * @property {string} postsCountText - "N posts total" 计数后缀 / Suffix for post count
+ * @property {string} noTagsText - 空标签集合时的提示 / Fallback shown when no tags exist
  */
 export interface TagsConfig {
   title: string
   description: string
   introduce: string
+  tagsCountText: string
+  postsCountText: string
+  noTagsText: string
 }
 
 export interface Skill {
@@ -223,11 +231,13 @@ export interface Photo {
  * @property {string} title - 页面标题 / Page title
  * @property {string} description - 页面描述 / Page description
  * @property {string} introduce - 页面介绍 / Page introduction
+ * @property {string} noPhotosText - 没有照片时的提示 / Fallback message shown when there are no photos
  */
 export interface PhotosConfig {
   title: string
   description: string
   introduce: string
+  noPhotosText: string
 }
 
 export type TimelineIconType = 'emoji' | 'icon' | 'color' | 'number' | 'image'

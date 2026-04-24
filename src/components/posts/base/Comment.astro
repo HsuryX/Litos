@@ -1,5 +1,5 @@
 ---
-import { COMMENT_CONFIG } from '~/config'
+import { COMMENT_CONFIG, POSTS_CONFIG } from '~/config'
 import Giscus from './Giscus.astro'
 
 interface Props {
@@ -19,7 +19,7 @@ if (!enabled || system === 'none' || (system === 'giscus' && !isGiscusConfigured
 ---
 
 <div class="comment-container">
-  <h3 class="text-xl font-semibold mb-6 text-[var(--color-heading)]">Comments</h3>
+  <h3 class="text-xl font-semibold mb-6 text-[var(--color-heading)]">{POSTS_CONFIG.commentsText}</h3>
 
   {system === 'giscus' && <Giscus id={id} title={title} />}
 </div>

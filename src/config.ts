@@ -248,6 +248,7 @@ export const POSTS_CONFIG: PostConfig = {
   nextPostText: 'Next Post',
   prevPostText: 'Previous Post',
   recommendText: 'REC',
+  commentsText: 'Comments',
   wordCountView: true,
 }
 
@@ -274,6 +275,9 @@ export const TAGS_CONFIG: TagsConfig = {
   title: 'Tags',
   description: 'All tags of Posts',
   introduce: 'All the tags for posts are here, you can click to filter them.',
+  tagsCountText: 'tags total',
+  postsCountText: 'posts total',
+  noTagsText: 'No tags available',
 }
 
 export const PROJECTS_CONFIG: ProjectConfig = {
@@ -286,6 +290,7 @@ export const PHOTOS_CONFIG: PhotosConfig = {
   title: 'Photos',
   description: 'Here I will record some photos taken in daily life.',
   introduce: 'Here I will record some photos taken in daily life.',
+  noPhotosText: 'No photos yet, wait for me to return, OvO',
 }
 
 export const ANALYTICS_CONFIG: AnalyticsConfig = {

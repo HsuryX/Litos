@@ -5,7 +5,7 @@ import PhotoTimeline from '~/components/photos/PhotoTimeline.astro'
 import PageTitle from '~/components/base/PageTitle.astro'
 import { PhotosList } from '~/lib/photos'
 
-const { title, description, introduce } = PHOTOS_CONFIG
+const { title, description, introduce, noPhotosText } = PHOTOS_CONFIG
 ---
 
 <Layout {title} {description} disableViewTransition>
@@ -17,7 +17,7 @@ const { title, description, introduce } = PHOTOS_CONFIG
           <PhotoTimeline photoData={PhotosList} />
         ) : (
           <div class="text-muted-foreground mb-4">
-            <p class="text-sm">No photos yet, wait for me to return, OvO</p>
+            <p class="text-sm">{noPhotosText}</p>
           </div>
         )
       }

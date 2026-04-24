@@ -31,42 +31,34 @@ const circumference = 2 * Math.PI * radius
 </div>
 
 <script>
-  /**
-   * 简单进度圆环
-   */
-  function setupSimpleProgressRing() {
-    const progressRings = document.querySelectorAll('[data-progress-ring]')
+  // Window 持久跨 SPA 导航，所以只绑一次滚动监听；查询在 handler 内进行，避免闭包里缓存上一页的 DOM。
+  let ticking = false
 
+  function updateProgress() {
+    const progressRings = document.querySelectorAll('[data-progress-ring]')
     if (!progressRings.length) return
 
-    function updateProgress() {
-      const scrollTop = window.scrollY
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrollPercent = Math.min(Math.max(scrollTop / docHeight, 0), 1)
+    const scrollTop = window.scrollY
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight
+    const scrollPercent = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0
 
-      progressRings.forEach((ring) => {
-        const circumference = 2 * Math.PI * parseFloat(ring.getAttribute('r') || '0')
-        const offset = circumference - scrollPercent * circumference
-        ;(ring as SVGCircleElement).style.strokeDashoffset = offset.toString()
-      })
-    }
-
-    let ticking = false
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateProgress()
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener('scroll', onScroll)
-    updateProgress()
-
-    return () => window.removeEventListener('scroll', onScroll)
+    progressRings.forEach((ring) => {
+      const circumference = 2 * Math.PI * parseFloat(ring.getAttribute('r') || '0')
+      const offset = circumference - scrollPercent * circumference
+      ;(ring as SVGCircleElement).style.strokeDashoffset = offset.toString()
+    })
   }
 
-  document.addEventListener('astro:page-load', setupSimpleProgressRing)
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateProgress()
+        ticking = false
+      })
+      ticking = true
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true })
+  document.addEventListener('astro:page-load', updateProgress)
 </script>

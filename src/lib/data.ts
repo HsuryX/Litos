@@ -15,10 +15,10 @@ export async function getAllPosts(): Promise<CollectionEntry<'posts'>[]> {
   return postsSort(allPosts.filter((post) => !post.data.draft))
 }
 
-// 获取所有置顶文章
+// 获取所有置顶文章（排除草稿，与 getAllPosts / getNumPosts 保持一致）
 export async function getPinnedPosts(): Promise<CollectionEntry<'posts'>[]> {
   const allPosts = await getCollection('posts')
-  const pinnedPosts = allPosts.filter((post) => post.data.pinned)
+  const pinnedPosts = allPosts.filter((post) => post.data.pinned && !post.data.draft)
   return postsSort(pinnedPosts)
 }
 

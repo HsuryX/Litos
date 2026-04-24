@@ -31,6 +31,12 @@ export function escapeXml(text: string): string {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;')
 }
 
+// 拆分 CDATA 终止符，避免文章里出现的字面 `]]>` 过早关闭当前 CDATA 段、
+// 破坏 XML 结构并绕过 sanitize-html 的净化边界。
+export function cdataEscape(text: string): string {
+  return text.split(']]>').join(']]]]><![CDATA[>')
+}
+
 // 去除 ANSI 颜色序列与非法 XML 控制字符
 const ANSI_REGEX = /\u001B\[[0-?]*[ -/]*[@-~]/g
 export function stripAnsi(text: string): string {
@@ -231,8 +237,8 @@ export async function generateRSS20(): Promise<string> {
       <guid>${siteUrl}/posts/${post.id}</guid>
       <updated>${(post.data.updatedDate || post.data.pubDate).toISOString()}</updated>
       <pubDate>${post.data.pubDate.toISOString()}</pubDate>
-      <description><![CDATA[${post.data.description || ''}]]></description>
-      <content:encoded><![CDATA[${post.htmlContent}]]></content:encoded>
+      <description><![CDATA[${cdataEscape(post.data.description || '')}]]></description>
+      <content:encoded><![CDATA[${cdataEscape(post.htmlContent)}]]></content:encoded>
       <author>${escapeXml(post.data.author || author)}</author>
       ${post.data.tags ? post.data.tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join('') : ''}
     </item>`
@@ -277,7 +283,7 @@ export async function generateAtom10(): Promise<string> {
       <name>${escapeXml(post.data.author || author)}</name>
     </author>
     <summary type="text">${escapeXml(post.data.description || '')}</summary>
-    <content type="html"><![CDATA[${post.htmlContent}]]></content>
+    <content type="html"><![CDATA[${cdataEscape(post.htmlContent)}]]></content>
     ${post.data.tags ? post.data.tags.map((tag) => `<category term="${escapeXml(tag)}" />`).join('\n    ') : ''}
   </entry>`
     )

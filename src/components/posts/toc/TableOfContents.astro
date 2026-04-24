@@ -156,13 +156,17 @@ const getRelativeIndentClass = (depth: number) => {
     return () => observer.disconnect()
   }
 
-  // 确保在页面内容加载完成后初始化
-  document.addEventListener('astro:page-load', () => {
-    const cleanup = updateActiveHeading()
+  // 在模块顶层只绑一次 before-swap，否则每次 page-load 都会再叠加一次监听器。
+  // 使用可覆盖的 currentCleanup 引用处理当前页的 IntersectionObserver 生命周期。
+  let currentCleanup: (() => void) | undefined
 
-    // 在页面切换时清理
-    document.addEventListener('astro:before-swap', () => {
-      cleanup?.()
-    })
+  document.addEventListener('astro:page-load', () => {
+    currentCleanup?.()
+    currentCleanup = updateActiveHeading()
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    currentCleanup?.()
+    currentCleanup = undefined
   })
 </script>

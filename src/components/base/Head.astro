@@ -32,7 +32,10 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <meta name="author" content={SITE.author} />
 
 <!-- color -->
-<meta name="theme-color" content="" />
+<!-- 与 global.css 中 :root 的 --background (light: 255 100% 100%) 和 .dark (240 10% 4%) 保持一致。
+     空字符串会让部分浏览器清掉默认主题色，比直接省略该标签更糟。 -->
+<meta name="theme-color" content="hsl(255 100% 100%)" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="hsl(240 10% 4%)" media="(prefers-color-scheme: dark)" />
 <meta name="color-scheme" content="light dark" />
 
 <!-- icon -->

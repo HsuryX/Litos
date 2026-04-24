@@ -149,9 +149,15 @@
     color-scheme: light;
     background-color: var(--color-background);
     font-family: var(--font-sans);
-    scroll-behavior: smooth;
     @variant dark {
       color-scheme: dark;
+    }
+  }
+
+  /* 仅在用户未请求减少动画时启用平滑滚动，避免违反 prefers-reduced-motion。 */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
     }
   }
 
@@ -265,6 +271,15 @@ html.theme-to-light::view-transition-new(theme-transition) {
   }
   to {
     clip-path: inset(0 0 0 0);
+  }
+}
+
+/* prefers-reduced-motion 用户应跳过 600ms 的主题切换动画；markdown.css 的 * 规则
+   不覆盖 ::view-transition-* 伪元素，所以这里要显式禁用。 */
+@media (prefers-reduced-motion: reduce) {
+  html.theme-to-dark::view-transition-new(theme-transition),
+  html.theme-to-light::view-transition-new(theme-transition) {
+    animation: none !important;
   }
 }
 

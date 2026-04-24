@@ -30,6 +30,15 @@
   --color-tag-text: hsl(var(--tag-text));
   --color-scrollbar: hsl(var(--scrollbar));
   --color-scrollbar-bg: hsl(var(--scrollbar-bg));
+
+  /* Z-index 层级 — 使用语义化名称替代魔法数字。
+     Tailwind 4 会从 --z-index-* 命名空间自动生成对应工具类（z-base / z-raised / z-sticky / z-header / z-overlay / z-modal）。 */
+  --z-index-base: 1;
+  --z-index-raised: 10;
+  --z-index-sticky: 40;
+  --z-index-header: 50;
+  --z-index-overlay: 200;
+  --z-index-modal: 9999;
 }
 
 /* ===== 字体配置 ===== */

@@ -120,7 +120,7 @@ export default function PhotoGalleryModal({ photos, title, description, isOpen, 
       {isOpen && (
         <motion.div
           key="modal-backdrop"
-          className="fixed inset-0 z-99999 flex items-center justify-center p-4"
+          className="fixed inset-0 z-modal flex items-center justify-center p-4"
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

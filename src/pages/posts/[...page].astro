@@ -26,7 +26,7 @@ const { title, description, introduce } = POSTS_CONFIG
 ---
 
 <Layout {title} {description}>
-  <div class="relative z-[1] py-8 pb-10 px-6 sm:px-8">
+  <div class="relative z-base py-8 pb-10 px-6 sm:px-8">
     <PageTitle {title} {introduce} />
     <div class="mt-12 fade-up">
       <List posts={page.data} type={POSTS_CONFIG.postPageConfig.type} coverLayout={POSTS_CONFIG.postPageConfig?.coverLayout} />

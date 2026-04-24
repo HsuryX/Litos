@@ -13,7 +13,7 @@ const recommendText = POSTS_CONFIG.recommendText
 <article class:list={['group relative flex flex-col justify-center bg-background', className]} {style}>
   <div class="flex w-full flex-col gap-3 py-3">
     <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground/80">
-      <time class="flex items-center gap-1.5">
+      <time datetime={post.data.pubDate.toISOString()} class="flex items-center gap-1.5">
         <span class="icon-[ph--calendar-blank] size-4"></span>
         {formatDate(post.data.pubDate, 'chinese')}
       </time>
@@ -21,7 +21,7 @@ const recommendText = POSTS_CONFIG.recommendText
         post.data.updatedDate && (
           <>
             <span class="text-border">|</span>
-            <time class="flex items-center gap-1.5">
+            <time datetime={post.data.updatedDate.toISOString()} class="flex items-center gap-1.5">
               <span class="icon-[ph--clock-clockwise] size-4" />
               {formatDate(post.data.updatedDate, 'chinese')}
             </time>

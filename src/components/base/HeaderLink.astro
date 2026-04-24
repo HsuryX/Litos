@@ -21,6 +21,7 @@ const isActive = Astro.url.pathname.startsWith(href)
     className
   )}
   rel="prefetch"
+  aria-current={isActive ? 'page' : undefined}
   {...props}
 >
   <slot />

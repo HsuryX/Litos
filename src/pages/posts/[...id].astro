@@ -70,6 +70,10 @@ const jsonLd = {
   },
   'keywords': frontmatter.tags,
 }
+
+// 防御性：文章标题/描述中如果出现 `</script>`，JSON.stringify 不会转义，
+// 直接注入会提前终止当前 script。用 < 替换 `<`，既是合法 JSON，又让 </script> 无法成形。
+const jsonLdSafe = JSON.stringify(jsonLd).replace(/</g, '\\u003c')
 ---
 
 <Layout
@@ -77,7 +81,7 @@ const jsonLd = {
   description={frontmatter.description || frontmatter.title}
   image={frontmatter.ogImage?.src ? new URL(frontmatter.ogImage.src, SITE.website).href : SITE.ogImage}
 >
-  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" is:inline set:html={jsonLdSafe} />
   <div class="relative flex flex-col justify-between h-fit z-base">
     <TocMobile {post} {posts} headings={filterHeadings} />
     <PostLayout {frontmatter} minutesRead={remarkPluginFrontmatter.minutesRead} wordCount={remarkPluginFrontmatter.wordCount}>

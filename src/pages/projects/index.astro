@@ -50,6 +50,7 @@ const projects = await getAllProjects()
                 <a
                   href={project.data.website}
                   target="_blank"
+                  rel="noopener noreferrer"
                   class="inline-flex items-center justify-between font-semibold text-lg/relaxed "
                 >
                   {project.data.name}
@@ -83,6 +84,7 @@ const projects = await getAllProjects()
                       <a
                         href={project.data.website}
                         target="_blank"
+                        rel="noopener noreferrer"
                         class="hover:text-zinc-600 dark:hover:text-zinc-100 flex items-center gap-1"
                       >
                         <span class="icon-[mdi--web] size-4" />
@@ -93,6 +95,7 @@ const projects = await getAllProjects()
                       <a
                         href={project.data.githubUrl}
                         target="_blank"
+                        rel="noopener noreferrer"
                         class="hover:text-zinc-600 dark:hover:text-zinc-100 flex items-center gap-1"
                       >
                         <span class="icon-[mdi--github] size-4" />

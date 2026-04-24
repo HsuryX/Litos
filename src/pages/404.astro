@@ -23,14 +23,25 @@ import Layout from '~/layouts/Layout.astro'
       </div>
       <div class="flex items-center text-muted-foreground mb-2 ml-5 animate-fade-in" style="animation-delay: 0.9s">
         <span class="text-blue-500 mr-2 w-4 text-center">›</span>
-        <span class="animate-typing cursor-pointer hover:text-foreground" style="animation-delay: 0.9s" onclick="history.back()">cd ..</span
+        <button
+          type="button"
+          data-action="back"
+          class="animate-typing cursor-pointer hover:text-foreground bg-transparent border-0 p-0 text-inherit font-inherit focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          style="animation-delay: 0.9s"
         >
+          cd ..
+        </button>
       </div>
       <div class="flex items-center text-muted-foreground mb-2 ml-5 animate-fade-in" style="animation-delay: 1.1s">
         <span class="text-blue-500 mr-2 w-4 text-center">›</span>
-        <span class="animate-typing cursor-pointer hover:text-foreground" style="animation-delay: 1.1s" onclick="window.location.href='/'"
-          >cd /</span
+        <button
+          type="button"
+          data-action="home"
+          class="animate-typing cursor-pointer hover:text-foreground bg-transparent border-0 p-0 text-inherit font-inherit focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          style="animation-delay: 1.1s"
         >
+          cd /
+        </button>
       </div>
     </div>
   </div>
@@ -72,10 +83,23 @@ import Layout from '~/layouts/Layout.astro'
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.animate-typing').forEach((el) => {
-      const text = el.textContent || ''
-      ;(el as HTMLElement).style.setProperty('--typing-width', `${text.length}ch`)
+  // CSP-friendly 404 actions: no inline onclick, wire up per-page on astro:page-load.
+  function setup() {
+    document.querySelectorAll<HTMLElement>('.animate-typing').forEach((el) => {
+      const text = el.textContent?.trim() || ''
+      el.style.setProperty('--typing-width', `${text.length}ch`)
     })
-  })
+
+    document.querySelector<HTMLButtonElement>('[data-action="back"]')?.addEventListener('click', () => history.back())
+    document.querySelector<HTMLButtonElement>('[data-action="home"]')?.addEventListener('click', () => {
+      window.location.href = '/'
+    })
+  }
+
+  if (document.readyState !== 'loading') {
+    setup()
+  } else {
+    document.addEventListener('DOMContentLoaded', setup)
+  }
+  document.addEventListener('astro:page-load', setup)
 </script>

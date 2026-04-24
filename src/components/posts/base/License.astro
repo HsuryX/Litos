@@ -169,18 +169,8 @@ const currentUrl =
     background-size: 20px 20px;
   }
 
+  /* 复用 global.css 里定义的 fadeUp，避免重复 keyframe。 */
   .license-container {
-    animation: fadeInUp 0.5s ease-out;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    animation: fadeUp 0.5s ease-out;
   }
 </style>

@@ -1,4 +1,5 @@
 ---
+import { POSTS_CONFIG } from '~/config'
 import { cn } from '~/lib/utils'
 
 interface Props {
@@ -32,7 +33,7 @@ const finalVariant = variant === 'default' ? defaultVariant : variant
 // 图标配置
 const iconConfig = {
   tag: 'icon-[heroicons--hashtag-16-solid]',
-  recommend: 'icon-[garden--sparkle-fill-16] ',
+  recommend: 'icon-[garden--sparkle-fill-16]',
 }
 
 const iconClass = iconConfig[type]
@@ -61,7 +62,7 @@ const iconClass = iconConfig[type]
         variantClasses[finalVariant],
         className
       )}
-      title="Recommended post"
+      title={POSTS_CONFIG.recommendText}
     >
       {showIcon && <span class={iconClass} />}
       <span class="font-semibold tracking-wide">{content}</span>

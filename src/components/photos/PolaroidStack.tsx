@@ -80,7 +80,13 @@ export default function PolaroidStack({ photos, title, description, className }:
     <>
       <motion.div ref={ref} className={cn('relative perspective-1000 ml-4 flex flex-wrap items-center ', className)}>
         {photos.map((photo, index) => (
-          <div key={typeof photo.src === 'string' ? photo.src : photo.src.src} onClick={() => handlePhotoClick(index)}>
+          <button
+            key={typeof photo.src === 'string' ? photo.src : photo.src.src}
+            type="button"
+            onClick={() => handlePhotoClick(index)}
+            aria-label={`Open photo ${index + 1} of ${photos.length}${photo.alt ? `: ${photo.alt}` : ''}`}
+            className="bg-transparent border-0 p-0 inline-block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          >
             <PolaroidCard
               photo={photo}
               index={index}
@@ -90,7 +96,7 @@ export default function PolaroidStack({ photos, title, description, className }:
               isVisible={isInView}
               isClicked={clickedPhotoIndex === index}
             />
-          </div>
+          </button>
         ))}
       </motion.div>
 

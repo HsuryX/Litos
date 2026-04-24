@@ -103,13 +103,13 @@ export default function Tooltip({
 
   const { showTooltip, hideTooltip } = tooltipContext
 
+  // 键盘用户聚焦到包裹的交互子元素（如链接/按钮）时也需要看到 tooltip。
+  // onFocus/onBlur 会冒泡，所以外层 div 不需要 tabIndex 也能接收到。
+  const show = () => !disabled && ref.current && showTooltip(ref.current, content)
+  const hide = () => !disabled && hideTooltip()
+
   return (
-    <div
-      ref={ref}
-      className={`relative inline-block ${className}`}
-      onMouseEnter={() => !disabled && ref.current && showTooltip(ref.current, content)}
-      onMouseLeave={() => !disabled && hideTooltip()}
-    >
+    <div ref={ref} className={`relative inline-block ${className}`} onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
       {children}
     </div>
   )

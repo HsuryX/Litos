@@ -24,9 +24,15 @@ const { title, description, image, disableViewTransition }: Props = Astro.props
     <Head title={`${title} | ${SITE.title}`} {description} {image} />
   </head>
   <body class="flex flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-modal focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+    >
+      Skip to main content
+    </a>
     <Header />
     <div class="grow flex">
-      <main class="relative border-x border-border/50 global-layout-width mx-auto grow min-w-0">
+      <main id="main-content" class="relative border-x border-border/50 global-layout-width mx-auto grow min-w-0">
         <slot />
       </main>
     </div>

@@ -5,7 +5,7 @@ import remarkDirectiveSugar from 'remark-directive-sugar'
 import remarkImgAttr from 'remark-imgattr'
 import remarkMath from 'remark-math'
 import remarkReadingTime from './remark-reading-time'
-import remarkLQIP from './remark-lqip.js'
+import remarkLQIP from './remark-lqip'
 import remarkGithubCard from './remark-github-card'
 
 import rehypeSlug from 'rehype-slug'

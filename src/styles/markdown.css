@@ -10,7 +10,6 @@
   --color-text-muted: light-dark(#6b7280, #9ca3af);
   --color-heading: light-dark(#0a0a0a, #d5d5d6);
   --color-link: light-dark(#0a0a0a, #e5e7eb);
-  --color-link-hover: light-dark(#1f2937, #f3f4f6);
   --color-anchor: light-dark(#6366f1, #818cf8);
 
   /* 背景颜色 */
@@ -35,9 +34,7 @@
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
-  --space-lg: 1.5rem;
   --space-xl: 2rem;
-  --space-2xl: 2.5rem;
   --space-3xl: 3rem;
 
   /* 圆角 */
@@ -735,10 +732,6 @@ image-figure-polaroid {
   margin-inline-start: 0.1rem;
   margin-block-end: 0.3rem;
   font-size: 0.6em;
-}
-
-.external-link-cursor {
-  cursor: var(--external-link-cursor);
 }
 
 /* ===== 徽章样式 ===== */

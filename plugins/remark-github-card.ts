@@ -1,5 +1,19 @@
 import { visit } from 'unist-util-visit'
 import type { RemarkPlugin } from '@astrojs/markdown-remark'
+import type { Root, RootContent } from 'mdast'
+
+// mdast-util-directive 是 transitive dep 不在顶层类型解析里；本地最小结构代替
+// 'LeafDirective | TextDirective'，只覆盖本插件访问的字段。
+interface DirectiveLike {
+  type: 'textDirective' | 'leafDirective'
+  name: string
+  attributes?: Record<string, string | null | undefined>
+  children?: RootContent[]
+  data?: {
+    hName?: string
+    hProperties?: Record<string, unknown>
+  }
+}
 
 const GITHUB_LOGO_SVG = `
       <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
@@ -36,19 +50,20 @@ const GITHUB_SLUG = /^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?$/
  * `.card-github.fetch-waiting` and filling in data from the GitHub API.
  */
 export const remarkGithubCard: RemarkPlugin = () => {
-  return (tree: any) => {
-    visit(tree, (node: any) => {
+  return (tree: Root) => {
+    visit(tree, (node) => {
       if (node.type !== 'textDirective' && node.type !== 'leafDirective') return
-      if (node.name !== 'github') return
+      const directive = node as unknown as DirectiveLike
+      if (directive.name !== 'github') return
 
-      const data = node.data || (node.data = {})
-      const attributes = node.attributes || {}
+      const data = directive.data || (directive.data = {})
+      const attributes = directive.attributes || {}
       const repo = attributes.repo
 
-      if (Array.isArray(node.children) && node.children.length !== 0) {
+      if (Array.isArray(directive.children) && directive.children.length !== 0) {
         data.hName = 'div'
         data.hProperties = { class: 'github-card-error' }
-        node.children = [
+        directive.children = [
           {
             type: 'text',
             value: 'Invalid directive. ("github" directive must be leaf type "::github{repo="owner/repo"}")',
@@ -62,7 +77,7 @@ export const remarkGithubCard: RemarkPlugin = () => {
       if (!owner || !repoName || !GITHUB_SLUG.test(owner) || !GITHUB_SLUG.test(repoName)) {
         data.hName = 'div'
         data.hProperties = { class: 'github-card-error' }
-        node.children = [
+        directive.children = [
           {
             type: 'text',
             value: 'Invalid repository. ("repo" attribute must be in the format "owner/repo")',
@@ -78,7 +93,7 @@ export const remarkGithubCard: RemarkPlugin = () => {
       data.hName = 'div'
       data.hProperties = { class: 'github-card-wrapper' }
 
-      node.children = [
+      directive.children = [
         {
           type: 'html',
           value: `

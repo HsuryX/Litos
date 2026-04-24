@@ -41,8 +41,10 @@ export async function getAllTags(): Promise<Record<string, number>> {
   )
 }
 
-// 获取project
+// 获取 project：先过滤草稿，再按 frontmatter 的 `order` 升序排序（未声明时排在最后）。
 export async function getAllProjects(): Promise<CollectionEntry<'projects'>[]> {
   const allProjects = await getCollection('projects')
-  return allProjects.filter((project) => !project.data.draft)
+  return allProjects
+    .filter((project) => !project.data.draft)
+    .sort((a, b) => (a.data.order ?? Number.POSITIVE_INFINITY) - (b.data.order ?? Number.POSITIVE_INFINITY))
 }

@@ -53,6 +53,9 @@ const projects = defineCollection({
       imageClass: z.string().optional(),
       star: z.number(),
       fork: z.number(),
+      // `order` 用于固定手动排序，目前示例项目 PureRead 依赖它；加进 schema
+      // 使其在运行时可见并阻止打错字。
+      order: z.number().optional(),
       draft: z.boolean().default(false),
     }),
 })

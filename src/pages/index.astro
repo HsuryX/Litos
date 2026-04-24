@@ -24,7 +24,7 @@ if (hasPinnedPosts) {
 ---
 
 <Layout title="Readme" description={SITE.description}>
-  <div class="relative z-[1]">
+  <div class="relative z-base">
     <div class="py-8 pb-10 px-6 sm:px-8">
       <h1 class="flex flex-col gap-2">
         <span class="text-4xl sm:text-5xl tracking-tight"> Litos </span>
@@ -47,7 +47,9 @@ if (hasPinnedPosts) {
       <div class="mt-6 flex gap-6">
         {
           SOCIAL_LINKS.map((item) => {
-            return <SocialLink href={item.url} icon={item.icon} aria-label={`Link of ${item.name}`} count={item.count} label="followers" />
+            return (
+              <SocialLink href={item.url} icon={item.icon} aria-label={`Link of ${item.name}`} count={item.followers} label="followers" />
+            )
           })
         }
       </div>

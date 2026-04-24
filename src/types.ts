@@ -161,13 +161,13 @@ export type Link = {
  * @property {string} name - 平台名称 / Platform name
  * @property {string} url - 个人主页URL / Profile URL
  * @property {string} icon - 图标类名 / Icon class name
- * @property {number} [count] - 可选计数 / Optional count
+ * @property {number} [followers] - 可选粉丝数（仅对支持的平台生效，例如 GitHub） / Optional follower count (only renders for platforms where the NumberTicker supports it, e.g. GitHub)
  */
 export type SocialLink = {
   name: string
   url: string
   icon: string
-  count?: number
+  followers?: number
 }
 
 /**

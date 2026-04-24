@@ -43,6 +43,33 @@ const layoutMap: Record<LayoutKey, any> = {
 
 const layoutKey: LayoutKey = (frontmatter.postType as LayoutKey) || (POSTS_CONFIG.postType as LayoutKey)
 const PostLayout = layoutMap[layoutKey]
+
+const canonicalUrl = new URL(`/posts/${post.id}`, SITE.website).href
+const ogImageUrl = frontmatter.ogImage?.src ? new URL(frontmatter.ogImage.src, SITE.website).href : new URL(SITE.ogImage, SITE.website).href
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  'headline': frontmatter.title,
+  'description': frontmatter.description || frontmatter.title,
+  'image': [ogImageUrl],
+  'datePublished': frontmatter.pubDate.toISOString(),
+  'dateModified': (frontmatter.updatedDate ?? frontmatter.pubDate).toISOString(),
+  'author': {
+    '@type': 'Person',
+    'name': frontmatter.author,
+    'url': SITE.website,
+  },
+  'publisher': {
+    '@type': 'Organization',
+    'name': SITE.title,
+    'url': SITE.website,
+  },
+  'mainEntityOfPage': {
+    '@type': 'WebPage',
+    '@id': canonicalUrl,
+  },
+  'keywords': frontmatter.tags,
+}
 ---
 
 <Layout
@@ -50,7 +77,8 @@ const PostLayout = layoutMap[layoutKey]
   description={frontmatter.description || frontmatter.title}
   image={frontmatter.ogImage?.src ? new URL(frontmatter.ogImage.src, SITE.website).href : SITE.ogImage}
 >
-  <div class="relative flex flex-col justify-between h-fit z-[1]">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+  <div class="relative flex flex-col justify-between h-fit z-base">
     <TocMobile {post} {posts} headings={filterHeadings} />
     <PostLayout {frontmatter} minutesRead={remarkPluginFrontmatter.minutesRead} wordCount={remarkPluginFrontmatter.wordCount}>
       <Content />

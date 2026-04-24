@@ -62,14 +62,14 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
   }, [currentIndex, containerWidth, isOpen])
 
   useEffect(() => {
-    const top = window.scrollY // 记录当前滚动位置
-    if (isOpen) {
-      // 计算滚动条宽度
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
-      // 防止背景滚动，同时补偿滚动条宽度以保持布局
-      document.body.style.overflow = 'hidden'
-      document.body.style.paddingRight = `${scrollbarWidth}px`
-    } else {
+    if (!isOpen) return
+    const top = window.scrollY
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+    document.body.style.overflow = 'hidden'
+    document.body.style.paddingRight = `${scrollbarWidth}px`
+    // Cleanup always runs — including when the modal unmounts while open — so the body
+    // never stays locked when the component disappears unexpectedly.
+    return () => {
       document.body.style.overflow = ''
       document.body.style.paddingRight = ''
       window.scrollTo(0, top)
@@ -153,9 +153,14 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
                   <h3 className="text-lg font-semibold text-foreground">{title}</h3>
                   {description && <p className="text-sm text-muted-foreground mt-1">{description}</p>}
                 </div>
-                <div className="w-5 h-7 flex items-center justify-center" onClick={onClose}>
-                  <span className="w-5 h-5 icon-[mdi--close] text-muted-foreground hover:text-foreground cursor-pointer transition-colors"></span>
-                </div>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close gallery"
+                  className="w-5 h-7 flex items-center justify-center bg-transparent border-0 p-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  <span className="w-5 h-5 icon-[mdi--close] text-muted-foreground hover:text-foreground transition-colors"></span>
+                </button>
               </div>
             </div>
 
@@ -216,7 +221,7 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
                         ? 'bg-muted text-muted-foreground cursor-not-allowed'
                         : 'bg-background hover:bg-accent text-foreground hover:text-accent-foreground'
                     }`}
-                    aria-label="上一张"
+                    aria-label="Previous photo"
                   >
                     <div className="w-5 h-5 icon-[mdi--chevron-left]"></div>
                   </button>
@@ -228,7 +233,7 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
                         ? 'bg-muted text-muted-foreground cursor-not-allowed'
                         : 'bg-background hover:bg-accent text-foreground hover:text-accent-foreground'
                     }`}
-                    aria-label="下一张"
+                    aria-label="Next photo"
                   >
                     <div className="w-5 h-5 icon-[mdi--chevron-right]"></div>
                   </button>

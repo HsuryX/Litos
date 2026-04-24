@@ -17,6 +17,9 @@
 <div
   id="search-mask"
   class="fixed z-200 hidden inset-0 bg-background/80 backdrop-blur-md dark:bg-background/90 transition-opacity duration-200 opacity-0"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Search"
 >
   <div class="absolute left-1/2 top-20 -translate-x-1/2 transition-transform duration-300 -translate-y-4 search-panel-show">
     <div
@@ -67,6 +70,7 @@
   let exactMode = readExactMode()
   let searchReqId = 0
   let setupController: AbortController | null = null
+  let lastFocusedElement: HTMLElement | null = null
 
   function readExactMode(): boolean {
     try {
@@ -112,6 +116,7 @@
     updateExactUI()
 
     function openSearch() {
+      lastFocusedElement = (document.activeElement as HTMLElement | null) ?? null
       searchMask!.classList.remove('hidden')
       void searchMask!.offsetHeight
       searchMask!.classList.remove('opacity-0')
@@ -124,10 +129,20 @@
       searchSwitch!.setAttribute('aria-expanded', 'false')
       searchInput!.value = ''
       searchResults!.innerHTML = ''
-      if (immediate) {
+      const finalize = () => {
         searchMask!.classList.add('hidden')
+        // Restore focus to whatever had it before the modal opened, falling back to the trigger.
+        if (lastFocusedElement && document.contains(lastFocusedElement)) {
+          lastFocusedElement.focus()
+        } else {
+          searchSwitch!.focus()
+        }
+        lastFocusedElement = null
+      }
+      if (immediate) {
+        finalize()
       } else {
-        setTimeout(() => searchMask!.classList.add('hidden'), 200)
+        setTimeout(finalize, 200)
       }
     }
 

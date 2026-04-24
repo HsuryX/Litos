@@ -239,21 +239,21 @@ html.theme-transitioning {
   animation: none !important;
   mix-blend-mode: normal !important;
   opacity: 1 !important;
-  z-index: 1 !important;
+  z-index: var(--z-index-base) !important;
 }
 
 /* 变成深色（黑色从上往下压） */
 html.theme-to-dark::view-transition-new(theme-transition) {
   animation: 600ms cubic-bezier(0.4, 0, 0.2, 1) theme-reveal-down !important;
   mix-blend-mode: normal !important;
-  z-index: 9999 !important;
+  z-index: var(--z-index-modal) !important;
 }
 
 /* 变成浅色（白色从下往上盖，即黑幕拉起） */
 html.theme-to-light::view-transition-new(theme-transition) {
   animation: 600ms cubic-bezier(0.4, 0, 0.2, 1) theme-reveal-up !important;
   mix-blend-mode: normal !important;
-  z-index: 9999 !important;
+  z-index: var(--z-index-modal) !important;
 }
 
 @keyframes theme-reveal-down {

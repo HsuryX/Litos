@@ -71,6 +71,25 @@
   let searchReqId = 0
   let setupController: AbortController | null = null
   let lastFocusedElement: HTMLElement | null = null
+  // pagefind 懒加载:只在用户首次触发搜索时才下载 pagefind bundle。
+  let pagefindReadyPromise: Promise<void> | null = null
+
+  async function ensurePagefindReady() {
+    if (!import.meta.env.PROD) return
+    if (pagefindReadyPromise) return pagefindReadyPromise
+    pagefindReadyPromise = (async () => {
+      if ((window as any).pagefind) return
+      // /pagefind/pagefind.js 是构建产物，不走 Vite import 解析，用字符串字面量拼接绕过静态分析。
+      const mod = await import(/* @vite-ignore */ '/pagefind/pagefind.js'.toString())
+      await mod.options({ excerptLength: 20, showSubResults: true })
+      mod.init()
+      ;(window as any).pagefind = mod
+    })().catch((err) => {
+      pagefindReadyPromise = null
+      throw err
+    })
+    return pagefindReadyPromise
+  }
 
   function readExactMode(): boolean {
     try {
@@ -122,6 +141,8 @@
       searchMask!.classList.remove('opacity-0')
       searchSwitch!.setAttribute('aria-expanded', 'true')
       searchInput!.focus()
+      // 首次打开时触发 pagefind 下载/初始化；后续 handleInput 会 await 同一个 promise。
+      void ensurePagefindReady().catch(() => {})
     }
 
     function closeSearch(immediate = false) {
@@ -236,8 +257,15 @@
         return
       }
 
+      // 搜索首次触发时可能还在等 pagefind 下载；await 保证 module 就绪后再查询。
+      await ensurePagefindReady()
+      const currentPagefind = (window as any).pagefind as typeof pagefind | undefined
+      if (!currentPagefind) {
+        searchResults!.appendChild(renderMessage('icon-[material-symbols--help-outline]', 'Search index unavailable'))
+        return
+      }
       const pagefindQuery = exactMode ? `"${q}"` : q
-      const search = await pagefind.debouncedSearch(pagefindQuery)
+      const search = await currentPagefind.debouncedSearch(pagefindQuery)
 
       // Drop stale results from superseded requests.
       if (reqId !== searchReqId || searchInput!.value.trim() !== q) return
@@ -276,5 +304,3 @@
   document.addEventListener('astro:page-load', setup)
   document.addEventListener('astro:before-preparation', teardown)
 </script>
-
-{import.meta.env.PROD && <script is:inline src="/js/pagefind-init.js" />}

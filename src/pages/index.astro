@@ -63,7 +63,7 @@ if (hasPinnedPosts) {
               <h2 class="text-2xl sm:text-3xl">Spotlight</h2>
               <p class="text-muted-foreground mb-6 mt-1">GitHub contributions in the past year:</p>
             </div>
-            <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:load transition:animate="none" />
+            <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
           </div>
         </>
       )

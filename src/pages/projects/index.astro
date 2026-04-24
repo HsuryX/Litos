@@ -63,7 +63,7 @@ const projects = await getAllProjects()
                         <>
                           <span class="text-xs uppercase tracking-wide font-medium text-muted-foreground">Stars</span>
                           <span class="font-semibold text-lg tracking-wider">
-                            <NumberTicker play value={project.data.star} client:load githubRepo={githubRepo} githubType="stars" />
+                            <NumberTicker play value={project.data.star} client:visible githubRepo={githubRepo} githubType="stars" />
                           </span>
                         </>
                       )}
@@ -73,7 +73,7 @@ const projects = await getAllProjects()
                         <>
                           <span class="text-xs uppercase tracking-wide font-medium text-muted-foreground">Forks</span>
                           <span class="font-semibold text-lg tracking-wider">
-                            <NumberTicker play value={project.data.fork} client:load githubRepo={githubRepo} githubType="forks" />
+                            <NumberTicker play value={project.data.fork} client:visible githubRepo={githubRepo} githubType="forks" />
                           </span>
                         </>
                       )}

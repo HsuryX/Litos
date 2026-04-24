@@ -23,6 +23,20 @@ const { id, title } = Astro.props
     return document.documentElement.classList.contains('dark') ? 'dark' : 'light'
   }
 
+  // giscus 的 client.js 会在 container 内异步插入 <iframe>。若用户在 iframe 挂载前
+  // 切换主题，themeObserver 的 syncTheme 会因为 querySelector 取不到 iframe 而早退，
+  // 结果 iframe 继承的是 data-theme 的初始值——出现"评论区停留在切换前的主题"的 bug。
+  // 这里监视 container，iframe 一旦出现就在它 load 后跑一次 syncTheme 关闭竞态。
+  function watchForIframeReady(container: HTMLElement) {
+    const mo = new MutationObserver(() => {
+      const iframe = container.querySelector<HTMLIFrameElement>('iframe.giscus-frame')
+      if (!iframe) return
+      mo.disconnect()
+      iframe.addEventListener('load', syncTheme, { once: true })
+    })
+    mo.observe(container, { childList: true, subtree: true })
+  }
+
   function initGiscus() {
     if (!giscus || isInitialized) return
     isInitialized = true
@@ -47,6 +61,7 @@ const { id, title } = Astro.props
     script.setAttribute('data-lang', giscus.lang || 'en')
     script.setAttribute('data-loading', giscus.loading || 'lazy')
 
+    watchForIframeReady(container)
     container.appendChild(script)
   }
 

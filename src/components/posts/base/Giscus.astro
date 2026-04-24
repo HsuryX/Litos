@@ -1,0 +1,143 @@
+---
+interface Props {
+  id: string
+  title: string
+}
+
+const { id, title } = Astro.props
+---
+
+<div id="giscus-container" data-id={id} data-title={title}></div>
+
+<script>
+  import { COMMENT_CONFIG } from '~/config'
+  const { giscus } = COMMENT_CONFIG
+
+  const GISCUS_ORIGIN = 'https://giscus.app'
+
+  let observer: IntersectionObserver | null = null
+  let themeObserver: MutationObserver | null = null
+  let isInitialized = false
+
+  function getTheme(): string {
+    return document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+  }
+
+  function initGiscus() {
+    if (!giscus || isInitialized) return
+    isInitialized = true
+
+    const container = document.getElementById('giscus-container')
+    if (!container) return
+
+    const script = document.createElement('script')
+    script.src = `${GISCUS_ORIGIN}/client.js`
+    script.async = true
+    script.crossOrigin = 'anonymous'
+    script.setAttribute('data-repo', giscus.repo)
+    script.setAttribute('data-repo-id', giscus.repoId)
+    script.setAttribute('data-category', giscus.category)
+    script.setAttribute('data-category-id', giscus.categoryId)
+    script.setAttribute('data-mapping', giscus.mapping || 'pathname')
+    script.setAttribute('data-strict', giscus.strict || '0')
+    script.setAttribute('data-reactions-enabled', giscus.reactionsEnabled || '1')
+    script.setAttribute('data-emit-metadata', giscus.emitMetadata || '0')
+    script.setAttribute('data-input-position', giscus.inputPosition || 'bottom')
+    script.setAttribute('data-theme', getTheme())
+    script.setAttribute('data-lang', giscus.lang || 'en')
+    script.setAttribute('data-loading', giscus.loading || 'lazy')
+
+    container.appendChild(script)
+  }
+
+  function syncTheme() {
+    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame')
+    if (!iframe?.contentWindow) return
+    iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: getTheme() } } }, GISCUS_ORIGIN)
+  }
+
+  function watchTheme() {
+    themeObserver?.disconnect()
+    themeObserver = new MutationObserver(syncTheme)
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+  }
+
+  function isElementInViewport(element: Element) {
+    const rect = element.getBoundingClientRect()
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight
+    return rect.top <= windowHeight + 3000 && rect.bottom >= -3000
+  }
+
+  function setupObserver() {
+    const container = document.getElementById('giscus-container')
+    if (!container) return
+
+    cleanup()
+
+    if (isElementInViewport(container)) {
+      initGiscus()
+      return
+    }
+
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isInitialized) {
+            initGiscus()
+            cleanup()
+          }
+        })
+      },
+      {
+        rootMargin: '3000px',
+        threshold: 0,
+      }
+    )
+
+    observer.observe(container)
+  }
+
+  function cleanup() {
+    observer?.disconnect()
+    observer = null
+  }
+
+  function resetAndInitialize() {
+    isInitialized = false
+    cleanup()
+    setupObserver()
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupObserver)
+  } else {
+    setupObserver()
+  }
+
+  watchTheme()
+
+  document.addEventListener('astro:page-load', resetAndInitialize)
+  document.addEventListener('astro:before-preparation', cleanup)
+  window.addEventListener('beforeunload', () => {
+    cleanup()
+    themeObserver?.disconnect()
+    themeObserver = null
+  })
+</script>
+
+<style is:global>
+  #giscus-container {
+    min-height: 10px;
+  }
+  .giscus,
+  .giscus-frame {
+    width: 100%;
+  }
+  .giscus-frame {
+    border: none;
+    color-scheme: normal;
+  }
+</style>

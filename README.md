@@ -33,7 +33,7 @@ Unlike traditional themes, Litos emphasizes visual aesthetics without compromisi
 - **Skills Showcase** — Visually represented technical stack configuration.
 - **Code Highlighting** — Integrated Expressive Code for beautiful syntax highlighting.
 - **Math Support** — KaTeX for rendering mathematical equations.
-- **Comments** — Gitalk integration for GitHub-based discussions.
+- **Comments** — Giscus integration backed by GitHub Discussions.
 - **SEO** — Built-in sitemaps, robots.txt, and meta tags.
 - **Analytics** — Configurable Vercount and Umami analytics.
 - **Dark Mode** — Native light and dark theme support.

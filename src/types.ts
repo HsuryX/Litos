@@ -243,18 +243,33 @@ export interface PhotoData {
   travel?: string
 }
 
-export interface GitalkConfig {
-  clientID: string
-  clientSecret: string
-  repo: string
-  owner: string
-  admin: string[]
-  language?: string
-  perPage?: number
-  pagerDirection?: 'last' | 'first'
-  createIssueManually?: boolean
-  distractionFreeMode?: boolean
-  enableHotKey?: boolean
+/**
+ * Giscus 配置接口 / Giscus configuration interface
+ * @description 通过 https://giscus.app 生成所需的 repoId 和 categoryId / Generate repoId and categoryId at https://giscus.app
+ * @property {string} repo - GitHub 仓库，格式 owner/repo / GitHub repository, format: owner/repo
+ * @property {string} repoId - 由 giscus.app 生成的 repo id / Repository ID from giscus.app
+ * @property {string} category - Discussion 分类名称 / Discussion category name
+ * @property {string} categoryId - 由 giscus.app 生成的 category id / Category ID from giscus.app
+ * @property {string} mapping - 页面与 discussion 的映射方式 / Page-to-discussion mapping
+ * @property {string} strict - 是否使用严格 URL 匹配 / Use strict title matching
+ * @property {string} reactionsEnabled - 是否启用主 post 反应 / Enable reactions for the main post
+ * @property {string} emitMetadata - 是否向父页面回传 discussion 元数据 / Emit discussion metadata to the parent page
+ * @property {string} inputPosition - 输入框位置 / Comment input position
+ * @property {string} lang - 显示语言 / Display language
+ * @property {string} loading - 加载策略 / Loading strategy
+ */
+export interface GiscusConfig {
+  repo: `${string}/${string}`
+  repoId: string
+  category: string
+  categoryId: string
+  mapping?: 'pathname' | 'url' | 'title' | 'og:title' | 'specific' | 'number'
+  strict?: '0' | '1'
+  reactionsEnabled?: '0' | '1'
+  emitMetadata?: '0' | '1'
+  inputPosition?: 'top' | 'bottom'
+  lang?: string
+  loading?: 'lazy' | 'eager'
 }
 
 export interface AnalyticsConfig {
@@ -274,6 +289,6 @@ export interface AnalyticsConfig {
 
 export interface CommentConfig {
   enabled: boolean
-  system: 'gitalk' | 'artalk' | 'waline' | 'none'
-  gitalk?: GitalkConfig
+  system: 'giscus' | 'artalk' | 'waline' | 'none'
+  giscus?: GiscusConfig
 }

@@ -19,7 +19,7 @@ Package manager: **pnpm** (required — there is a `pnpm-lock.yaml`).
 | `pnpm format` | Prettier check |
 | `pnpm format:write` | Prettier write (cached) |
 
-Env vars live in `.env` (see `.env.example`). Gitalk uses `PUBLIC_GITHUB_CLIENT_ID` / `PUBLIC_GITHUB_CLIENT_SECRET` — note the `PUBLIC_` prefix, which is what Astro exposes to the client, so a server-side rewrite is required before shipping any key not safe for the browser.
+Env vars live in `.env` (see `.env.example`). The default comment system (Giscus) needs no env vars — `repoId` and `categoryId` in `src/config.ts` are public identifiers generated at https://giscus.app.
 
 There is no unit test runner configured. "Tests" here mean `astro check` + a clean `pnpm build`.
 

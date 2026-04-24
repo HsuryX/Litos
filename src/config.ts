@@ -252,21 +252,22 @@ export const POSTS_CONFIG: PostConfig = {
   wordCountView: true,
 }
 
+// Generate repoId and categoryId at https://giscus.app, then paste the values below.
 export const COMMENT_CONFIG: CommentConfig = {
   enabled: true,
-  system: 'gitalk',
-  gitalk: {
-    clientID: import.meta.env.PUBLIC_GITHUB_CLIENT_ID,
-    clientSecret: import.meta.env.PUBLIC_GITHUB_CLIENT_SECRET,
-    repo: 'gitalk-comment',
-    owner: 'Dnzzk2',
-    admin: ['Dnzzk2'],
-    language: 'en-US',
-    perPage: 5,
-    pagerDirection: 'last',
-    createIssueManually: false,
-    distractionFreeMode: false,
-    enableHotKey: true,
+  system: 'giscus',
+  giscus: {
+    repo: 'Dnzzk2/Litos',
+    repoId: 'REPLACE_WITH_REPO_ID',
+    category: 'General',
+    categoryId: 'REPLACE_WITH_CATEGORY_ID',
+    mapping: 'pathname',
+    strict: '0',
+    reactionsEnabled: '1',
+    emitMetadata: '0',
+    inputPosition: 'bottom',
+    lang: 'en',
+    loading: 'lazy',
   },
 }
 

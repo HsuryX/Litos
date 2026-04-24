@@ -420,21 +420,16 @@ You can go to the website to view the configuration options of expressive-code.
 
 ---
 
-### Comment System (Gitalk)
+### Comment System (Giscus)
 
-The theme has a built-in :link[Gitalk]{id=https://github.com/gitalk/gitalk} comment system that uses GitHub Issues as the comment backend. Each post automatically gets its own issue for comments.
+The theme has a built-in :link[Giscus]{id=https://github.com/giscus/giscus} comment system powered by GitHub Discussions. Each post automatically gets its own discussion thread.
 
 #### Prerequisites
 
-You need to create a **GitHub OAuth App** first:
-
-1. Go to :link[GitHub Developer Settings]{id=https://github.com/settings/developers} → **OAuth Apps** → **New OAuth App**.
-2. Fill in the form:
-   - **Application name**: Any name (e.g. `My Blog Comments`)
-   - **Homepage URL**: Your site URL (e.g. `https://yourdomain.com`)
-   - **Authorization callback URL**: Same as your site URL
-3. After creation, copy the **Client ID** and generate a **Client Secret**.
-4. Create a **public repository** on GitHub to store comment issues (e.g. `blog-comments`).
+1. Create a **public repository** on GitHub to host the discussions (it can be the same repo as your blog source).
+2. Enable the **Discussions** feature in the repository's **Settings → Features**.
+3. Install the :link[giscus app]{id=https://github.com/apps/giscus} on that repository.
+4. Go to :link[giscus.app]{id=https://giscus.app} and fill in your repo. The page will generate `data-repo-id` and `data-category-id` values — copy them.
 
 #### Configuration
 
@@ -443,50 +438,45 @@ Configure the comment system in `src/config.ts`:
 ```ts title="config.ts"
 export const COMMENT_CONFIG: CommentConfig = {
   enabled: true,
-  system: 'gitalk',
-  gitalk: {
-    clientID: import.meta.env.PUBLIC_GITHUB_CLIENT_ID,
-    clientSecret: import.meta.env.PUBLIC_GITHUB_CLIENT_SECRET,
-    repo: 'blog-comments',
-    owner: 'YourGitHubUsername',
-    admin: ['YourGitHubUsername'],
-    language: 'en-US',
-    perPage: 5,
-    pagerDirection: 'last',
-    createIssueManually: false,
-    distractionFreeMode: false,
-    enableHotKey: true,
+  system: 'giscus',
+  giscus: {
+    repo: 'YourGitHubUsername/your-repo',
+    repoId: 'R_xxxxxxxxxx',
+    category: 'General',
+    categoryId: 'DIC_xxxxxxxxxx',
+    mapping: 'pathname',
+    strict: '0',
+    reactionsEnabled: '1',
+    emitMetadata: '0',
+    inputPosition: 'bottom',
+    lang: 'en',
+    loading: 'lazy',
   },
 }
 ```
 
-Then set the environment variables. Create a `.env` file in the project root (refer to `.env.example`):
-
-```bash title=".env"
-PUBLIC_GITHUB_CLIENT_ID=your-github-client-id
-PUBLIC_GITHUB_CLIENT_SECRET=your-github-client-secret
-```
+No environment variables are required — `repoId` and `categoryId` are public identifiers that are safe to commit.
 
 #### Config Properties
 
-| Property            | Description                                                                                   |
-| ------------------- | --------------------------------------------------------------------------------------------- |
-| enabled             | Whether to enable the comment system.                                                         |
-| system              | Comment system to use. Options: `gitalk`, `none`.                                             |
-| clientID            | GitHub OAuth App Client ID.                                                                   |
-| clientSecret        | GitHub OAuth App Client Secret.                                                               |
-| repo                | The GitHub repository name for storing comment issues.                                        |
-| owner               | The GitHub username of the repository owner.                                                  |
-| admin               | Array of GitHub usernames who can initialize comment issues.                                  |
-| language            | Display language. e.g. `en-US`, `zh-CN`, `zh-TW`.                                             |
-| perPage             | Number of comments per page.                                                                  |
-| pagerDirection      | Comment sorting direction. `last` (newest first) or `first` (oldest first).                   |
-| createIssueManually | If `true`, issues must be created manually. If `false`, auto-created on first visit by admin. |
-| distractionFreeMode | If `true`, enables full-screen overlay when typing a comment.                                 |
-| enableHotKey        | Whether to enable `Cmd/Ctrl + Enter` shortcut to submit comments.                             |
+| Property         | Description                                                                                                |
+| ---------------- | ---------------------------------------------------------------------------------------------------------- |
+| enabled          | Whether to enable the comment system.                                                                      |
+| system           | Comment system to use. Options: `giscus`, `none`.                                                          |
+| repo             | GitHub repository in `owner/repo` form that hosts the discussions.                                         |
+| repoId           | Repository ID generated at :link[giscus.app]{id=https://giscus.app}.                                       |
+| category         | Discussion category name (e.g. `General`, `Announcements`).                                                |
+| categoryId       | Category ID generated at :link[giscus.app]{id=https://giscus.app}.                                         |
+| mapping          | Page → discussion mapping. One of `pathname`, `url`, `title`, `og:title`, `specific`, `number`.            |
+| strict           | `'1'` for strict title matching, `'0'` otherwise.                                                          |
+| reactionsEnabled | `'1'` to enable reactions on the main post.                                                                |
+| emitMetadata     | `'1'` to emit discussion metadata messages to the host page.                                               |
+| inputPosition    | `top` or `bottom` — position of the comment input relative to the thread.                                  |
+| lang             | Display language code (e.g. `en`, `zh-CN`, `ja`).                                                          |
+| loading          | `lazy` or `eager`.                                                                                         |
 
 > [!NOTE]
 > To disable comments entirely, set `enabled: false` or `system: 'none'` in `COMMENT_CONFIG`.
 
-> [!CAUTION]
-> The `clientID` and `clientSecret` are read from environment variables via `import.meta.env`. Make sure to add `.env` to your `.gitignore` file (already included by default) to avoid leaking secrets.
+> [!TIP]
+> The Giscus iframe theme is synced to the site's light/dark mode automatically — no extra configuration required.

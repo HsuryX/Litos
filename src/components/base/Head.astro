@@ -74,7 +74,7 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <meta property="twitter:image" content={ogImage} />
 
 {
-  ANALYTICS_CONFIG.umami?.enabled && (
+  ANALYTICS_CONFIG.umami?.enabled && ANALYTICS_CONFIG.umami.websiteId && !ANALYTICS_CONFIG.umami.websiteId.includes('Your ') && (
     <script is:inline defer src={ANALYTICS_CONFIG.umami.serverUrl} data-website-id={ANALYTICS_CONFIG.umami.websiteId} />
   )
 }

@@ -114,10 +114,8 @@ async function processImagePaths(htmlContent: string, siteUrl: string, postId: s
           processedContent = processedContent.replace(fullMatch, newImgTag)
         } catch (error) {
           console.warn(`Failed to process image: ${imagePath}`, error)
-          // 回退到基本的绝对路径
-          const fallbackUrl = `${siteUrl}/src/content/posts/${postId}/${src}`
-          const newImgTag = `<img${beforeSrc}src="${fallbackUrl}"${afterSrc}>`
-          processedContent = processedContent.replace(fullMatch, newImgTag)
+          // 优化失败时移除 <img>，避免把内部 /src/content/ 路径泄露进 feed。
+          processedContent = processedContent.replace(fullMatch, '')
         }
       }
     }
@@ -264,7 +262,7 @@ export async function generateAtom10(): Promise<string> {
     <name>${escapeXml(author)}</name>
     <uri>${siteUrl}</uri>
   </author>
-  <generator uri="https://github.com/Dnzzk2/Litos" version="5.0">Astro Litos Theme</generator>
+  <generator uri="https://github.com/Dnzzk2/Litos">Astro Litos Theme</generator>
   <rights>Copyright © ${new Date().getFullYear()} ${escapeXml(author)}</rights>
   ${processedPosts
     .map(

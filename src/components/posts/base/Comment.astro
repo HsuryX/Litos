@@ -8,9 +8,12 @@ interface Props {
 }
 
 const { id, title } = Astro.props
-const { enabled, system } = COMMENT_CONFIG
+const { enabled, system, giscus } = COMMENT_CONFIG
 
-if (!enabled || system === 'none') {
+const isGiscusConfigured =
+  system === 'giscus' && giscus && !giscus.repoId.startsWith('REPLACE_') && !giscus.categoryId.startsWith('REPLACE_')
+
+if (!enabled || system === 'none' || (system === 'giscus' && !isGiscusConfigured)) {
   return null
 }
 ---

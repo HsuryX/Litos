@@ -73,7 +73,8 @@ export default function NumberTicker({
     if (ref.current) {
       ref.current.textContent = `${Intl.NumberFormat('en-US').format(direction === 'down' ? value : 0)} ${label ? label : ''}`
     }
-  }, [])
+    // 依赖齐 label/direction/value：原来空依赖导致 label 改了但 spring 动画未触发时显示陈旧文案。
+  }, [label, direction, value])
 
   useEffect(() => {
     const unsubscribe = springValue.on('change', (latest) => {

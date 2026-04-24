@@ -10,7 +10,9 @@ export default defineEcConfig({
     showLineNumbers: false,
     preserveIndent: true,
   },
-  minSyntaxHighlightingColorContrast: 0,
+  // WCAG AA 文本对比度下限 (4.5:1)；0 会关掉检查。Catppuccin 两套主题都能过 4.5，放宽到 0
+  // 只有在调色板明显低对比时才必要。
+  minSyntaxHighlightingColorContrast: 4.5,
 
   styleOverrides: {
     uiFontFamily: 'var(--font-sans)',

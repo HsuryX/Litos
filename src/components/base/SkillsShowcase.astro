@@ -19,7 +19,7 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
         <div class="relative w-full overflow-hidden my-4 group content-visibility-auto">
           <div
             class={cn(
-              'flex w-max will-change-transform',
+              'flex w-max',
               row.direction === 'right' ? 'animate-[scroll-reverse_30s_linear_infinite]' : 'animate-[scroll_30s_linear_infinite]',
               'group-hover:[animation-play-state:paused]'
             )}

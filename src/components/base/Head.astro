@@ -43,8 +43,9 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-{/* RSS Feed Link */}
+{/* RSS + Atom Feed Links */}
 <link rel="alternate" type="application/rss+xml" title={SITE.title} href={new URL('/rss.xml', Astro.site).href} />
+<link rel="alternate" type="application/atom+xml" title={SITE.title} href={new URL('/atom.xml', Astro.site).href} />
 
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 

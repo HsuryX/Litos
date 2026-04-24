@@ -1,4 +1,3 @@
-import React from 'react'
 import { motion } from 'motion/react'
 import type { Photo, PolaroidVariant } from '~/types'
 import { cn } from '~/lib/utils'
@@ -22,7 +21,7 @@ const polaroidVariants: Record<PolaroidVariant, string> = {
   '9x16': 'w-20 h-32',
 }
 
-const PolaroidCard: React.FC<Props> = ({ photo, index, totalPhotos, rotation, variant, isVisible, isClicked = false }) => {
+export default function PolaroidCard({ photo, index, totalPhotos, rotation, variant, isVisible, isClicked = false }: Props) {
   const baseZIndex = totalPhotos - index
   // 根据图片位置计算移动距离，后面的图片移动得更多
   const moveDistance = index === 0 ? 0 : 25 // 第一张20px，第二张40px，第三张60px...
@@ -95,5 +94,3 @@ const PolaroidCard: React.FC<Props> = ({ photo, index, totalPhotos, rotation, va
     </motion.div>
   )
 }
-
-export default PolaroidCard

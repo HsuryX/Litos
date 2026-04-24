@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { motion, AnimatePresence, useMotionValue, animate } from 'motion/react'
+import { AnimatePresence, animate, motion, useMotionValue } from 'motion/react'
 import type { Photo } from '~/types'
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
   initialIndex?: number
 }
 
-const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen, onClose, initialIndex = 0 }) => {
+export default function PhotoGalleryModal({ photos, title, description, isOpen, onClose, initialIndex = 0 }: Props) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex)
   const containerRef = useRef<HTMLDivElement>(null)
   const imageRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -199,8 +199,9 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
                           alt={photo.alt}
                           className="max-w-full max-h-[70vh] object-contain select-none pointer-events-none"
                           onLoad={() => {
-                            if (index === currentIndex && imageRefs.current[index]) {
-                              setCurrentHeight(imageRefs.current[index]!.offsetHeight)
+                            const el = imageRefs.current[index]
+                            if (index === currentIndex && el) {
+                              setCurrentHeight(el.offsetHeight)
                             }
                           }}
                         />
@@ -254,5 +255,3 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
   // 使用 Portal 将弹窗渲染到 body
   return typeof document !== 'undefined' ? createPortal(modalContent, document.body) : null
 }
-
-export default PhotoGalleryModal

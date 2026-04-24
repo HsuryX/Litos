@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useInView } from 'motion/react'
 import type { Photo } from '~/types'
 import { cn } from '~/lib/utils'
@@ -15,18 +15,18 @@ interface Props {
 // 生成随机旋转角度
 const generateRotations = (count: number) => Array.from({ length: count }, () => Math.random() * 20 - 10)
 
-const PolaroidStack: React.FC<Props> = ({ photos, title, description, className }) => {
-  const ref = React.useRef(null)
+export default function PolaroidStack({ photos, title, description, className }: Props) {
+  const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.4 })
-  const [isModalOpen, setIsModalOpen] = React.useState(false)
-  const [shouldRenderModal, setShouldRenderModal] = React.useState(false)
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = React.useState(0)
-  const [clickedPhotoIndex, setClickedPhotoIndex] = React.useState<number | null>(null)
-  const openTimerRef = React.useRef<number | null>(null)
-  const closeTimerRef = React.useRef<number | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [shouldRenderModal, setShouldRenderModal] = useState(false)
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0)
+  const [clickedPhotoIndex, setClickedPhotoIndex] = useState<number | null>(null)
+  const openTimerRef = useRef<number | null>(null)
+  const closeTimerRef = useRef<number | null>(null)
 
   // 为每张照片生成固定的旋转角度
-  const photoRotations = React.useMemo(() => generateRotations(photos.length), [photos.length])
+  const photoRotations = useMemo(() => generateRotations(photos.length), [photos.length])
 
   const handlePhotoClick = (index: number) => {
     if (closeTimerRef.current) {
@@ -64,7 +64,7 @@ const PolaroidStack: React.FC<Props> = ({ photos, title, description, className 
     }, 200)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       if (openTimerRef.current) {
         window.clearTimeout(openTimerRef.current)
@@ -107,5 +107,3 @@ const PolaroidStack: React.FC<Props> = ({ photos, title, description, className 
     </>
   )
 }
-
-export default PolaroidStack

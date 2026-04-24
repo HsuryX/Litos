@@ -1,5 +1,3 @@
-'use client'
-
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils'
 import Tooltip, { TooltipProvider } from './Tooltip.tsx'
@@ -88,8 +86,8 @@ function generatePlaceholderContributions(): Response {
   }
 }
 
-async function fetchContributions(username: string): Promise<Response> {
-  const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`)
+async function fetchContributions(username: string, signal: AbortSignal): Promise<Response> {
+  const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, { signal })
   const data: Response | ErrorData = await response.json()
 
   if (!response.ok) {
@@ -101,7 +99,8 @@ async function fetchContributions(username: string): Promise<Response> {
 
 export default function GithubContributions({ username, tooltipEnabled }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [data, setData] = useState<Response | null>(generatePlaceholderContributions())
+  // Lazy initializer: generatePlaceholderContributions only runs once on mount, not on every render.
+  const [data, setData] = useState<Response | null>(() => generatePlaceholderContributions())
   const [errorVisible, setErrorVisible] = useState(true)
 
   const scrollToRight = useCallback(() => {
@@ -110,19 +109,21 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
     }
   }, [])
 
-  const fetchData = useCallback(() => {
-    fetchContributions(username)
-      .then(setData)
-      .then(scrollToRight)
-      .then(() => {
+  useEffect(() => {
+    const controller = new AbortController()
+    fetchContributions(username, controller.signal)
+      .then((fresh) => {
+        if (controller.signal.aborted) return
+        setData(fresh)
+        scrollToRight()
         setErrorVisible(false)
       })
-      .catch(() => {
+      .catch((err: unknown) => {
+        if (err instanceof DOMException && err.name === 'AbortError') return
         setData(generateErrorContributions())
       })
-  }, [username])
-
-  useEffect(fetchData, [fetchData])
+    return () => controller.abort()
+  }, [username, scrollToRight])
 
   // 将贡献数据按周分组
   const weeks =

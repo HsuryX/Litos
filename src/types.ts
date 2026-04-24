@@ -64,7 +64,6 @@ export type PostType = 'metaOnly' | 'coverSplit' | 'coverTop'
  * @property {PostCardPageConfig} tagsPageConfig - 标签页文章展示配置 / Post display configuration for tags page
  * @property {PostType} postType - 文章详情页默认顶部布局 / Default post detail page layout
  * @property {boolean} ogImageUseCover - 是否使用文章封面图作为OGP图片 / Whether to use the article cover image as the OGP image
- * @property {boolean} imageDarkenInDark - 是否在暗黑模式下对图片进行暗化处理 / Whether to darken images in dark mode
  * @property {string} readMoreText - "阅读更多"按钮文本 / "Read more" button text
  * @property {string} prevPageText - 上一页按钮文本 / Previous page button text
  * @property {string} nextPageText - 下一页按钮文本 / Next page button text
@@ -85,7 +84,6 @@ export interface PostConfig {
   tagsPageConfig: PostCardPageConfig
   postType: PostType
   ogImageUseCover: boolean
-  imageDarkenInDark: boolean
   readMoreText: string
   prevPageText: string
   nextPageText: string

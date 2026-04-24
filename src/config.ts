@@ -240,7 +240,6 @@ export const POSTS_CONFIG: PostConfig = {
   },
   ogImageUseCover: false,
   postType: 'metaOnly',
-  imageDarkenInDark: true,
   readMoreText: 'Read more',
   prevPageText: 'Previous',
   nextPageText: 'Next',

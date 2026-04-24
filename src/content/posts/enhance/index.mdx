@@ -15,7 +15,7 @@ This guide has made slight changes based on the [markdown-mdx-extended-features]
 
 Supported by the :link[rehype-callouts]{id=lin-stephanie/rehype-callouts class='github'} , you can configure the plugin in `plugins/index.ts`.
 
-If you change the `theme` configuration (default: `'vitepress'`), you will also need to update the imported CSS file in `src/styles/pro.css` (`@import 'rehype-callouts/theme/yourconfig'`).
+If you change the `theme` configuration (default: `'vitepress'`), you will also need to update the imported CSS file in `src/styles/markdown.css` (`@import 'rehype-callouts/theme/yourconfig'`).
 
 ```md
 <!-- Callout type names are case-insensitive: 'Note', 'NOTE', and 'note' are equivalent. -->
@@ -310,7 +310,7 @@ console.log('I am on line 6')
 
 ## Image Caption & Link
 
-Use the [`:::image`](https://github.com/lin-stephanie/remark-directive-sugar?tab=readme-ov-file#image-) directive from :link[remark-directive-sugar]{#lin-stephanie/remark-directive-sugar .github} to wrap images in a container for captions, clickable links, and more. Customize via the `image` option in `plugins/index.ts` (`remarkDirectiveSugar`) and style under `/* :::image */` in `src/styles/pro.css`.
+Use the [`:::image`](https://github.com/lin-stephanie/remark-directive-sugar?tab=readme-ov-file#image-) directive from :link[remark-directive-sugar]{#lin-stephanie/remark-directive-sugar .github} to wrap images in a container for captions, clickable links, and more. Customize via the `image` option in `plugins/index.ts` (`remarkDirectiveSugar`) and style under `/* :::image */` in `src/styles/markdown.css`.
 
 ### image-figure
 
@@ -433,7 +433,7 @@ The custom directive wraps an image inside a link, making it clickable.
 
 Polaroid style images with a border and shadow.
 
-In order to ensure the style size on the phone, I have set a minimum width of 300px, and you can modify and expand the style in `src/styles/picture.css`.
+In order to ensure the style size on the phone, I have set a minimum width of 300px, and you can modify and expand the style in `src/styles/markdown.css`.
 
 ```md title=':::image-figure-polaroid.md'
 :::::image-div-polaroid
@@ -503,7 +503,7 @@ Congratulations from :link[oopsunix]{#@oopsunix}
 
 ## Video Embedding
 
-Use the [`::video`](https://github.com/lin-stephanie/remark-directive-sugar?tab=readme-ov-file#video-) directive from :link[remark-directive-sugar]{id=lin-stephanie/remark-directive-sugar .github} for consistent video embedding across different platforms. Customize via the `video` option in `plugins/index.ts` and style under `/* ::video */` in `src/styles/pro.css`.
+Use the [`::video`](https://github.com/lin-stephanie/remark-directive-sugar?tab=readme-ov-file#video-) directive from :link[remark-directive-sugar]{id=lin-stephanie/remark-directive-sugar .github} for consistent video embedding across different platforms. Customize via the `video` option in `plugins/index.ts` and style under `/* ::video */` in `src/styles/markdown.css`.
 
 Say `example.md` contains:
 
@@ -539,7 +539,7 @@ Then `example.mdx` renders as:
 
 ## Styled Link（`:link`）
 
-Use the [`:link`](https://github.com/lin-stephanie/remark-directive-sugar?tab=readme-ov-file#link) directive from :link[remark-directive-sugar]{id=lin-stephanie/remark-directive-sugar .github} to add links with avatars or favicons for GitHub, npm, or custom URLs. Customize via the `link` option in `plugins/index.ts` and style under `/* :link */` in `src/styles/pro.css`.
+Use the [`:link`](https://github.com/lin-stephanie/remark-directive-sugar?tab=readme-ov-file#link) directive from :link[remark-directive-sugar]{id=lin-stephanie/remark-directive-sugar .github} to add links with avatars or favicons for GitHub, npm, or custom URLs. Customize via the `link` option in `plugins/index.ts` and style under `/* :link */` in `src/styles/markdown.css`.
 
 **Link to a GitHub user or organization (prepend `id` with `@`)**
 
@@ -582,7 +582,7 @@ https://litos.vercel.app/favicon.ico}
 
 Use the [`:badge`](https://github.com/lin-stephanie/remark-directive-sugar?tab=readme-ov-file#badge-) directive from :link[remark-directive-sugar]{id=lin-stephanie/remark-directive-sugar .github} to display small pieces of information, such as status or category.
 
-The theme provides the following one predefined badges. You can customize them via the `badge` option in `plugins/index.ts` and style them under `/* :badge */` in `src/styles/pro.css`.
+The theme provides the following one predefined badges. You can customize them via the `badge` option in `plugins/index.ts` and style them under `/* :badge */` in `src/styles/markdown.css`.
 
 - `badge-n`: :badge-n
 

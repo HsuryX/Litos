@@ -2,7 +2,7 @@
 <img src="./src/assets/readme/logo.png" width="400" alt="Litos Logo" />
 
 ![License](https://img.shields.io/github/license/Dnzzk2/Litos?color=blue&style=flat-square)
-![Astro](https://img.shields.io/badge/Astro-v5.0-orange?style=flat-square&logo=astro)
+![Astro](https://img.shields.io/badge/Astro-v6.1-orange?style=flat-square&logo=astro)
 ![React](https://img.shields.io/badge/React-v19.0-blue?style=flat-square&logo=react)
 ![Tailwind](https://img.shields.io/badge/TailwindCSS-v4.0-38b2ac?style=flat-square&logo=tailwindcss)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5.0-blue?style=flat-square&logo=typescript)
@@ -25,7 +25,7 @@ Unlike traditional themes, Litos emphasizes visual aesthetics without compromisi
 
 ## Key Features
 
-- **Modern Architecture** — Astro 5 + React 19 for blazing fast performance and dynamic interactivity.
+- **Modern Architecture** — Astro 6 + React 19 for blazing fast performance and dynamic interactivity.
 - **Elegant Design** — Fully responsive, meticulously crafted UI with TailwindCSS 4.
 - **Posts** — Multiple layout options (compact, cover image) with rich Markdown support.
 - **Projects** — Dedicated portfolio section with filterable tags.
@@ -49,7 +49,7 @@ Deploy your own Litos blog with one click:
 
 ### Prerequisites
 
-- **Node.js** (v18 or higher)
+- **Node.js** (v22.12 or higher — required by Astro 6)
 - **pnpm** (recommended)
 
 ### Installation

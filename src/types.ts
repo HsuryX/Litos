@@ -6,6 +6,7 @@ import type { ImageMetadata } from 'astro'
  * @property {string} title - 站点标题 / Site title
  * @property {string} base - 站点基础路径 / Site base path
  * @property {string} description - 站点描述 / Site description
+ * @property {string} lang - 站点语言代码 / Site language code (html lang attribute)
  * @property {string} author - 作者名称 / Author name
  * @property {string} website - 网站地址 / Website address
  * @property {string} ogImage - OGP 图片地址 / OGP image address
@@ -32,7 +33,7 @@ export type CoverLayout = 'left' | 'right'
 
 /**
  * 文章卡片类型 / PostCardType
- * @description 可选值为 'compact' 、'image' 和 'time-line' / Possible values: 'compact', 'image' and 'timeLine'
+ * @description 可选值为 'compact'、'image'、'time-line'、'minimal' 和 'cover' / Possible values: 'compact', 'image', 'time-line', 'minimal', and 'cover'
  */
 export type PostCardType = 'compact' | 'image' | 'time-line' | 'minimal' | 'cover'
 
@@ -61,6 +62,7 @@ export type PostType = 'metaOnly' | 'coverSplit' | 'coverTop'
  * @property {PostCardPageConfig} homePageConfig - 首页文章展示配置 / Home page posts display configuration
  * @property {PostCardPageConfig} postPageConfig - 文章列表页展示配置 / Posts list page display configuration
  * @property {PostCardPageConfig} tagsPageConfig - 标签页文章展示配置 / Post display configuration for tags page
+ * @property {PostType} postType - 文章详情页默认顶部布局 / Default post detail page layout
  * @property {boolean} ogImageUseCover - 是否使用文章封面图作为OGP图片 / Whether to use the article cover image as the OGP image
  * @property {boolean} imageDarkenInDark - 是否在暗黑模式下对图片进行暗化处理 / Whether to darken images in dark mode
  * @property {string} readMoreText - "阅读更多"按钮文本 / "Read more" button text
@@ -70,6 +72,8 @@ export type PostType = 'metaOnly' | 'coverSplit' | 'coverTop'
  * @property {string} backToPostsText - 返回文章列表按钮文本 / Back to posts list button text
  * @property {string} nextPostText - 下一篇文章按钮文本 / Next post button text
  * @property {string} prevPostText - 上一篇文章按钮文本 / Previous post button text
+ * @property {string} recommendText - 推荐标签文本 / Recommend tag text
+ * @property {boolean} wordCountView - 是否在文章详情页显示字数 / Show word count on post detail pages
  */
 export interface PostConfig {
   title: string

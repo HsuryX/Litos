@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Litos is an Astro 5 + React 19 + Tailwind 4 blog theme. It's a static site with MDX content collections, client-side React islands for interactive widgets, and Pagefind-powered search.
+Litos is an Astro 6 + React 19 + Tailwind 4 blog theme. It's a static site with MDX content collections, client-side React islands for interactive widgets, and Pagefind-powered search.
 
 ## Commands
 

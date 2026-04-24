@@ -53,6 +53,7 @@ export const POSTS_CONFIG: PostConfig = {
   nextPostText: 'Next Post',
   prevPostText: 'Previous Post',
   recommendText: 'REC',
+  wordCountView: true,
 }
 ```
 
@@ -66,7 +67,7 @@ There are a few configuration attributes, please refer to the table below for de
 | author                                                                      | The author of the posts.                                                                                                                                                                                           |
 | homePageConfig                                                              | **readme page** configuration.                                                                                                                                                                                     |
 | &nbsp;&nbsp;&nbsp;&nbsp;size                                                | The number of posts displayed on the **readme page**.                                                                                                                                                              |
-| &nbsp;&nbsp;&nbsp;&nbsp;type                                                | In the **read page**, the style of displaying data in a list , `compact` 、`minimal` 、`time-line` or `image`.                                                                                                     |
+| &nbsp;&nbsp;&nbsp;&nbsp;type                                                | In the **read page**, the style of displaying data in a list: `compact`, `minimal`, `time-line`, `image`, or `cover`.                                                                                             |
 | &nbsp;&nbsp;&nbsp;&nbsp;coverLayout <br/>&nbsp;&nbsp;&nbsp;&nbsp;(optional) | When the type is image, this attribute can set the position of the image in the card. You can choose left or right. If not set, it will appear alternately on the left and right.                                  |
 | postPageConfig                                                              | Same as homePageConfig above, but size represents the base number of pages and is used for **post pages**.                                                                                                         |
 | tagsPageConfig                                                              | Same as homePageConfig above, but size represents the base number of pages and is used for **tag pages**.                                                                                                          |
@@ -81,6 +82,7 @@ There are a few configuration attributes, please refer to the table below for de
 | nextPostText                                                                | The text of the next post button.                                                                                                                                                                                  |
 | prevPostText                                                                | The text of the previous post button.                                                                                                                                                                              |
 | recommendText                                                               | The text of the recommend tag.                                                                                                                                                                                     |
+| wordCountView                                                               | Whether to show the word count and reading time on post detail pages.                                                                                                                                              |
 
 #### Type & PostType
 
@@ -173,10 +175,11 @@ const posts = defineCollection({
         coverLayout: z.custom<CoverLayout>().optional(),
         pinned: z.boolean().default(false),
         draft: z.boolean().default(false),
+        license: z.string().optional(),
       })
       .transform((data) => ({
         ...data,
-        ogImage: data.ogImage ? data.ogImage : POSTS_CONFIG.ogImageUseCover && data.cover ? data.cover : undefined,
+        ogImage: POSTS_CONFIG.ogImageUseCover && data.cover ? data.cover : data.ogImage,
       })),
 })
 ```
@@ -196,6 +199,7 @@ const posts = defineCollection({
 | coverLayout | When the type is `image`, this attribute can set the position of the image in the card. You can choose `left` or `right`. If not set, it will appear alternately on the left and right. |
 | pinned      | Whether to top the post.                                                                                                                                                                |
 | draft       | Whether to hide the post.                                                                                                                                                               |
+| license     | Optional SPDX-style license identifier (e.g. `CC-BY-NC-SA-4.0`). When set, a license block is rendered at the bottom of the post.                                                       |
 
 > [!TIP]
 > Regarding `cover` and `ogImage`.

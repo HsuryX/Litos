@@ -66,25 +66,28 @@ export const PhotosList: PhotoData[] = [
     description: 'It was early spring, so I went to see the cherry blossoms.',
     date: '2026-03-07',
     travel: '',
-    photos: getPhotos(
-      '2026-03-07-botanicalGarden',
-      'Early spring cherry blossoms at the botanical garden',
-      ['3x4', '3x4', '3x4', '3x4', '3x4', '3x4']
-    ),
+    photos: getPhotos('2026-03-07-botanicalGarden', 'Early spring cherry blossoms at the botanical garden', [
+      '3x4',
+      '3x4',
+      '3x4',
+      '3x4',
+      '3x4',
+      '3x4',
+    ]),
   },
 ]
 ```
 
 ### PhotoData fields
 
-| Field | Meaning |
-| --- | --- |
-| `title` | Timeline title |
-| `icon` | Left-side timeline icon |
+| Field         | Meaning                       |
+| ------------- | ----------------------------- |
+| `title`       | Timeline title                |
+| `icon`        | Left-side timeline icon       |
 | `description` | Optional timeline description |
-| `date` | Timeline date |
-| `travel` | Optional extra label |
-| `photos` | Array of `Photo` objects |
+| `date`        | Timeline date                 |
+| `travel`      | Optional extra label          |
+| `photos`      | Array of `Photo` objects      |
 
 ## How `getPhotos()` works
 
@@ -110,11 +113,11 @@ function getPhotos(dir: string, alt: string, variants: PolaroidVariant[]): Photo
 
 ### Parameter meaning
 
-| Parameter | Meaning |
-| --- | --- |
-| `dir` | Folder name under `src/assets/photos` |
-| `alt` | Shared `alt` text for every image returned from that folder |
-| `variants` | Ratio list matched to the sorted images by index |
+| Parameter  | Meaning                                                     |
+| ---------- | ----------------------------------------------------------- |
+| `dir`      | Folder name under `src/assets/photos`                       |
+| `alt`      | Shared `alt` text for every image returned from that folder |
+| `variants` | Ratio list matched to the sorted images by index            |
 
 ### Important behavior
 
@@ -131,11 +134,14 @@ The third parameter is not random metadata. It is position-based.
 For this code:
 
 ```ts title="src/lib/photos.ts"
-photos: getPhotos(
-  '2026-03-07-botanicalGarden',
-  'Early spring cherry blossoms at the botanical garden',
-  ['3x4', '3x4', '3x4', '3x4', '3x4', '3x4']
-)
+photos: getPhotos('2026-03-07-botanicalGarden', 'Early spring cherry blossoms at the botanical garden', [
+  '3x4',
+  '3x4',
+  '3x4',
+  '3x4',
+  '3x4',
+  '3x4',
+])
 ```
 
 Assume the folder `src/assets/photos/2026-03-07-botanicalGarden/` contains these files after sorting:
@@ -151,14 +157,14 @@ Assume the folder `src/assets/photos/2026-03-07-botanicalGarden/` contains these
 
 Then the mapping is:
 
-| File | Applied variant |
-| --- | --- |
-| `01.webp` | first item in the array -> `3x4` |
+| File      | Applied variant                   |
+| --------- | --------------------------------- |
+| `01.webp` | first item in the array -> `3x4`  |
 | `02.webp` | second item in the array -> `3x4` |
-| `03.webp` | third item in the array -> `3x4` |
+| `03.webp` | third item in the array -> `3x4`  |
 | `04.webp` | fourth item in the array -> `3x4` |
-| `05.webp` | fifth item in the array -> `3x4` |
-| `06.webp` | sixth item in the array -> `3x4` |
+| `05.webp` | fifth item in the array -> `3x4`  |
+| `06.webp` | sixth item in the array -> `3x4`  |
 
 So if you want the first photo in the folder to use `3x4`, the first item in the third array must be `3x4`.
 
@@ -217,17 +223,13 @@ const polaroidVariants: Record<PolaroidVariant, string> = {
 Example:
 
 ```ts title="src/lib/photos.ts"
-{
+const newEntry: PhotoData = {
   title: 'Spring Walk',
   icon: { type: 'emoji', value: '🌿' },
   description: 'A short walk with a camera.',
   date: '2026-04-01',
   travel: '',
-  photos: getPhotos(
-    '2026-04-01-spring-walk',
-    'Photos from a spring walk',
-    ['3x4', '4x3', '4x5', '4x3']
-  ),
+  photos: getPhotos('2026-04-01-spring-walk', 'Photos from a spring walk', ['3x4', '4x3', '4x5', '4x3']),
 }
 ```
 

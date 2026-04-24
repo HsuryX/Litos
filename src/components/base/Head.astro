@@ -73,32 +73,17 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={ogImage} />
 
-
 {
   ANALYTICS_CONFIG.umami?.enabled && (
-    <script
-      is:inline
-      defer
-      src={ANALYTICS_CONFIG.umami.serverUrl}
-      data-website-id={ANALYTICS_CONFIG.umami.websiteId}
-    ></script>
+    <script is:inline defer src={ANALYTICS_CONFIG.umami.serverUrl} data-website-id={ANALYTICS_CONFIG.umami.websiteId} />
   )
 }
-{
-  ANALYTICS_CONFIG.vercount?.enabled && (
-    <script is:inline defer src="https://events.vercount.one/js" data-astro-rerun></script>
-  )
-}
+{ANALYTICS_CONFIG.vercount?.enabled && <script is:inline defer src="https://events.vercount.one/js" data-astro-rerun />}
 {
   ANALYTICS_CONFIG.google?.enabled && (
     <>
-      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.google.id}`}></script>
-      <script is:inline define:vars={{ id: ANALYTICS_CONFIG.google.id }}>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', id);
-      </script>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.google.id}`} />
+      <script is:inline src="/js/gtag-init.js" data-ga-id={ANALYTICS_CONFIG.google.id} />
     </>
   )
 }

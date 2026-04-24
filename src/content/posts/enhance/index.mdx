@@ -205,17 +205,17 @@ echo "Test" > /home/test.txt
 
 ```ts /ye(s|p)/
 // Regular expressions
-If you only want to mark certain parts matched by your regular expression, you can use capture groups.
-
-For example, the expression `/ye(s|p)/` will match yes and yep, but only mark the character s or p:
+// If you only want to mark certain parts matched by your regular expression, you can use capture groups.
+//
+// For example, the expression /ye(s|p)/ will match yes and yep, but only mark the character s or p:
 ```
 
 ```ts /ye(?:s|p)/
 // Regular expressions
-To prevent this special treatment of capture groups, you can convert them to non-capturing groups by adding ?: after the opening parenthesis. For example:
-
-This block uses `/ye(?:s|p)/`, which causes the full
-matching words "yes" and "yep" to be marked.
+// To prevent this special treatment of capture groups, you can convert them to non-capturing groups by adding ?: after the opening parenthesis. For example:
+//
+// This block uses /ye(?:s|p)/, which causes the full
+// matching words "yes" and "yep" to be marked.
 ```
 
 ```js "return true;" ins="inserted" del="deleted"

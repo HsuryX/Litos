@@ -67,7 +67,7 @@ There are a few configuration attributes, please refer to the table below for de
 | author                                                                      | The author of the posts.                                                                                                                                                                                           |
 | homePageConfig                                                              | **readme page** configuration.                                                                                                                                                                                     |
 | &nbsp;&nbsp;&nbsp;&nbsp;size                                                | The number of posts displayed on the **readme page**.                                                                                                                                                              |
-| &nbsp;&nbsp;&nbsp;&nbsp;type                                                | In the **read page**, the style of displaying data in a list: `compact`, `minimal`, `time-line`, `image`, or `cover`.                                                                                             |
+| &nbsp;&nbsp;&nbsp;&nbsp;type                                                | In the **read page**, the style of displaying data in a list: `compact`, `minimal`, `time-line`, `image`, or `cover`.                                                                                              |
 | &nbsp;&nbsp;&nbsp;&nbsp;coverLayout <br/>&nbsp;&nbsp;&nbsp;&nbsp;(optional) | When the type is image, this attribute can set the position of the image in the card. You can choose left or right. If not set, it will appear alternately on the left and right.                                  |
 | postPageConfig                                                              | Same as homePageConfig above, but size represents the base number of pages and is used for **post pages**.                                                                                                         |
 | tagsPageConfig                                                              | Same as homePageConfig above, but size represents the base number of pages and is used for **tag pages**.                                                                                                          |
@@ -463,21 +463,21 @@ No environment variables are required — `repoId` and `categoryId` are public i
 
 #### Config Properties
 
-| Property         | Description                                                                                                |
-| ---------------- | ---------------------------------------------------------------------------------------------------------- |
-| enabled          | Whether to enable the comment system.                                                                      |
-| system           | Comment system to use. Options: `giscus`, `none`.                                                          |
-| repo             | GitHub repository in `owner/repo` form that hosts the discussions.                                         |
-| repoId           | Repository ID generated at :link[giscus.app]{id=https://giscus.app}.                                       |
-| category         | Discussion category name (e.g. `General`, `Announcements`).                                                |
-| categoryId       | Category ID generated at :link[giscus.app]{id=https://giscus.app}.                                         |
-| mapping          | Page → discussion mapping. One of `pathname`, `url`, `title`, `og:title`, `specific`, `number`.            |
-| strict           | `'1'` for strict title matching, `'0'` otherwise.                                                          |
-| reactionsEnabled | `'1'` to enable reactions on the main post.                                                                |
-| emitMetadata     | `'1'` to emit discussion metadata messages to the host page.                                               |
-| inputPosition    | `top` or `bottom` — position of the comment input relative to the thread.                                  |
-| lang             | Display language code (e.g. `en`, `zh-CN`, `ja`).                                                          |
-| loading          | `lazy` or `eager`.                                                                                         |
+| Property         | Description                                                                                     |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| enabled          | Whether to enable the comment system.                                                           |
+| system           | Comment system to use. Options: `giscus`, `none`.                                               |
+| repo             | GitHub repository in `owner/repo` form that hosts the discussions.                              |
+| repoId           | Repository ID generated at :link[giscus.app]{id=https://giscus.app}.                            |
+| category         | Discussion category name (e.g. `General`, `Announcements`).                                     |
+| categoryId       | Category ID generated at :link[giscus.app]{id=https://giscus.app}.                              |
+| mapping          | Page → discussion mapping. One of `pathname`, `url`, `title`, `og:title`, `specific`, `number`. |
+| strict           | `'1'` for strict title matching, `'0'` otherwise.                                               |
+| reactionsEnabled | `'1'` to enable reactions on the main post.                                                     |
+| emitMetadata     | `'1'` to emit discussion metadata messages to the host page.                                    |
+| inputPosition    | `top` or `bottom` — position of the comment input relative to the thread.                       |
+| lang             | Display language code (e.g. `en`, `zh-CN`, `ja`).                                               |
+| loading          | `lazy` or `eager`.                                                                              |
 
 > [!NOTE]
 > To disable comments entirely, set `enabled: false` or `system: 'none'` in `COMMENT_CONFIG`.

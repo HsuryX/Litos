@@ -33,7 +33,14 @@ export const PhotosList: PhotoData[] = [
     description: 'It was early spring, so I went to see the cherry blossoms.',
     date: '2026-03-07',
     travel: '',
-    photos: getPhotos('2026-03-07-botanicalGarden', 'Early spring cherry blossoms at the botanical garden', ['3x4', '3x4', '3x4', '3x4', '3x4', '3x4']),
+    photos: getPhotos('2026-03-07-botanicalGarden', 'Early spring cherry blossoms at the botanical garden', [
+      '3x4',
+      '3x4',
+      '3x4',
+      '3x4',
+      '3x4',
+      '3x4',
+    ]),
   },
   {
     title: 'Around Home',

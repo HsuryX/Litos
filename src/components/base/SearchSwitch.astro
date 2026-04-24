@@ -8,12 +8,18 @@
   aria-label="Search"
   title="Search (Ctrl+K)"
 >
-    <span class="icon-[material-symbols--manage-search] size-6"></span>
+  <span class="icon-[material-symbols--manage-search] size-6"></span>
 </button>
 
-<div id="search-mask" class="fixed z-200 hidden inset-0 bg-background/80 backdrop-blur-md dark:bg-background/90 transition-opacity duration-200 opacity-0">
+<div
+  id="search-mask"
+  class="fixed z-200 hidden inset-0 bg-background/80 backdrop-blur-md dark:bg-background/90 transition-opacity duration-200 opacity-0"
+>
   <div class="absolute left-1/2 top-20 -translate-x-1/2 transition-transform duration-300 -translate-y-4 search-panel-show">
-      <div id="search-panel" class="grid grid-rows-[auto_1fr] max-h-[80vh] w-[22rem] sm:w-[40rem] bg-background/95 dark:bg-background/95 border border-border shadow-lg dark:shadow-accent/20 overflow-hidden">
+    <div
+      id="search-panel"
+      class="grid grid-rows-[auto_1fr] max-h-[80vh] w-[22rem] sm:w-[40rem] bg-background/95 dark:bg-background/95 border border-border shadow-lg dark:shadow-accent/20 overflow-hidden"
+    >
       <div id="search-bar" class="grid grid-cols-[auto_1fr_auto_auto] items-center gap-2 px-4 h-12 border-b border-border">
         <span class="icon-[material-symbols--manage-search] size-6 text-muted-foreground"></span>
         <label class="sr-only" for="search-input">Search</label>
@@ -24,7 +30,12 @@
           placeholder="Search"
           autocomplete="off"
         />
-        <button id="search-exact" class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded border border-border text-muted-foreground hover:bg-accent select-none" aria-pressed="false" title="Exact Match">
+        <button
+          id="search-exact"
+          class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded border border-border text-muted-foreground hover:bg-accent select-none"
+          aria-pressed="false"
+          title="Exact Match"
+        >
           Exact
         </button>
         <kbd class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-xs text-muted-foreground bg-muted rounded">ESC</kbd>
@@ -46,7 +57,9 @@
 
   // 精确模式状态（持久化）
   let exactMode = false
-  try { exactMode = localStorage.getItem('search-exact') === '1' } catch {}
+  try {
+    exactMode = localStorage.getItem('search-exact') === '1'
+  } catch {}
   const updateExactUI = () => {
     if (!exactToggle) return
     exactToggle.setAttribute('aria-pressed', exactMode ? 'true' : 'false')
@@ -61,7 +74,9 @@
   updateExactUI()
   exactToggle?.addEventListener('click', () => {
     exactMode = !exactMode
-    try { localStorage.setItem('search-exact', exactMode ? '1' : '0') } catch {}
+    try {
+      localStorage.setItem('search-exact', exactMode ? '1' : '0')
+    } catch {}
     updateExactUI()
     // 模式变更后立刻重新检索
     searchInput?.dispatchEvent(new Event('input'))
@@ -93,7 +108,7 @@
     searchMask?.classList.add('opacity-0')
     if (searchInput) searchInput.value = ''
     if (searchResults) searchResults.innerHTML = ''
-      searchMask?.classList.add('hidden')
+    searchMask?.classList.add('hidden')
   }
 
   // 点击开关
@@ -160,41 +175,41 @@
         return
       }
 
-      if(search?.results){
+      if (search?.results) {
         for (const result of search?.results) {
-        const data = await result.data()
-        // 显示主结果
-        const resultItem = document.createElement('a')
-        resultItem.href = data.url
-        resultItem.className = 'search-results-item'
-        resultItem.innerHTML = `
+          const data = await result.data()
+          // 显示主结果
+          const resultItem = document.createElement('a')
+          resultItem.href = data.url
+          resultItem.className = 'search-results-item'
+          resultItem.innerHTML = `
           <div class="search-results-title">${data.meta.title}</div>
           <div class="search-results-excerpt">${data.excerpt}</div>
         `
-        resultItem.addEventListener('click', closeSearchIn)
-        searchResults?.appendChild(resultItem)
+          resultItem.addEventListener('click', closeSearchIn)
+          searchResults?.appendChild(resultItem)
 
-        // 显示子结果（如果有）
-        if (data.sub_results) {
-          for (const subResult of data.sub_results) {
-            if (subResult.excerpt === data.excerpt) continue;
+          // 显示子结果（如果有）
+          if (data.sub_results) {
+            for (const subResult of data.sub_results) {
+              if (subResult.excerpt === data.excerpt) continue
 
-            const cleanTitle = subResult.title.replace(/\s*[Hh][1-6]$/g, '');
+              const cleanTitle = subResult.title.replace(/\s*[Hh][1-6]$/g, '')
 
-            if (!cleanTitle) continue; // 跳过空标题
+              if (!cleanTitle) continue // 跳过空标题
 
-            const subItem = document.createElement('a')
-            subItem.href = subResult.url
-            subItem.className = 'search-results-item sub-result pl-4 border-l-2 border-accent'
-            subItem.innerHTML = `
+              const subItem = document.createElement('a')
+              subItem.href = subResult.url
+              subItem.className = 'search-results-item sub-result pl-4 border-l-2 border-accent'
+              subItem.innerHTML = `
               <div class="search-results-title text-sm opacity-80">${cleanTitle}</div>
               <div class="search-results-excerpt text-xs">${subResult.excerpt}</div>
             `
-            subItem.addEventListener('click', closeSearchIn)
-            searchResults?.appendChild(subItem)
+              subItem.addEventListener('click', closeSearchIn)
+              searchResults?.appendChild(subItem)
+            }
           }
         }
-      }
       }
     } else {
       const noResults = document.createElement('div')
@@ -212,20 +227,4 @@
   searchInput?.addEventListener('input', handleInput)
 </script>
 
-{import.meta.env.PROD &&
-  <script is:inline define:vars={{scriptUrl: ('/pagefind/pagefind.js')}}>
-    async function loadPagefind() {
-      const pagefind = await import(scriptUrl)
-
-      await pagefind.options({
-        'excerptLength': 20,
-        'showSubResults': true,
-      })
-
-      pagefind.init()
-      window.pagefind = pagefind
-      pagefind.search('')
-    }
-
-    if (!window.pagefind) loadPagefind()
-  </script>}
+{import.meta.env.PROD && <script is:inline src="/js/pagefind-init.js" />}

@@ -13,6 +13,10 @@ const { class: className } = Astro.props
   <slot />
 </div>
 
+<!-- Hydrates `::github{repo="owner/repo"}` cards emitted by remark-github-card.
+     Loads once, enhances any `.card-github.fetch-waiting` on this and future SPA navigations. -->
+<script is:inline src="/js/github-card.js"></script>
+
 <script>
   /* medium-zoom */
   import mediumZoom from 'medium-zoom/dist/pure'

@@ -1,3 +1,10 @@
-# exclude formatting
+# Generated / build output
+dist/
+.astro/
+public/pagefind/
+
+# Lockfile
 pnpm-lock.yaml
+
+# Authored by hand; keep untouched
 *.md

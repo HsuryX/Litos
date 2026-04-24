@@ -18,7 +18,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     build: {
-      chunkSizeWarningLimit: 1500,
+      // Vite default is 500. 800 leaves headroom for motion + floating-ui chunks
+      // without hiding a runaway bundle on the next upgrade.
+      chunkSizeWarningLimit: 800,
     },
   },
   markdown: {

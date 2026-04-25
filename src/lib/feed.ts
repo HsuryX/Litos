@@ -140,7 +140,7 @@ async function addCoverImage(post: CollectionEntry<'posts'>, siteUrl: string): P
     if (post.data.cover && typeof post.data.cover === 'object' && post.data.cover.src) {
       const optimizedImage = await getImage({ src: post.data.cover })
       const absoluteUrl = new URL(optimizedImage.src, siteUrl).toString()
-      const coverHtml = `<img src="${absoluteUrl}" alt="${post.data.title}" style="width: 100%; height: auto; margin-bottom: 1em;" />`
+      const coverHtml = `<img src="${absoluteUrl}" alt="${escapeXml(post.data.title)}" style="width: 100%; height: auto; margin-bottom: 1em;" />`
       return coverHtml
     }
     return ''

@@ -793,6 +793,12 @@ image-figure-polaroid {
   image-figure-polaroid {
     transition: none;
   }
+
+  /* hover transform 仍会应用——只是没有过渡。1° 旋转 + 1.02× 缩放仍是几何位移，
+     用户既然请求减少动画，就把 hover 状态钉回基础变换，只保留阴影变化。 */
+  image-figure-polaroid:hover {
+    transform: rotate(-1deg);
+  }
 }
 
 /* 文章正文里的链接自动换行 */

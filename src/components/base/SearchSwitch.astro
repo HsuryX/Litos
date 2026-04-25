@@ -107,9 +107,16 @@
     }
   }
 
+  function unlockBodyScroll() {
+    document.body.style.overflow = ''
+    document.body.style.paddingRight = ''
+  }
+
   function teardown() {
     setupController?.abort()
     setupController = null
+    // Defensive: SPA nav while modal open must not leave body locked.
+    unlockBodyScroll()
   }
 
   function setup() {
@@ -141,6 +148,10 @@
       searchMask!.classList.remove('opacity-0')
       searchSwitch!.setAttribute('aria-expanded', 'true')
       searchInput!.focus()
+      // paddingRight 抵消滚动条消失带来的横向跳动，与 PhotoGalleryModal 保持一致。
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+      document.body.style.overflow = 'hidden'
+      document.body.style.paddingRight = `${scrollbarWidth}px`
       // 首次打开时触发 pagefind 下载/初始化；后续 handleInput 会 await 同一个 promise。
       void ensurePagefindReady().catch(() => {})
     }
@@ -152,6 +163,7 @@
       searchResults!.innerHTML = ''
       const finalize = () => {
         searchMask!.classList.add('hidden')
+        unlockBodyScroll()
         // Restore focus to whatever had it before the modal opened, falling back to the trigger.
         if (lastFocusedElement && document.contains(lastFocusedElement)) {
           lastFocusedElement.focus()

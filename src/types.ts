@@ -186,6 +186,7 @@ export interface ProjectConfig {
   title: string
   description: string
   introduce: string
+  noProjectsText: string
 }
 
 // 项目图标类型 / Project icon type

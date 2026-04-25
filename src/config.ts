@@ -284,6 +284,7 @@ export const PROJECTS_CONFIG: ProjectConfig = {
   title: 'Projects',
   description: 'The examples of my projects.',
   introduce: 'The examples of my projects.',
+  noProjectsText: 'No projects yet, check back later!',
 }
 
 export const PHOTOS_CONFIG: PhotosConfig = {
